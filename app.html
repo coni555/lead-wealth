@@ -1,0 +1,2694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumen Almanac · 财富自由指路灯</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0e0e1c">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ================================================================
+   LUMEN ALMANAC · DESIGN TOKENS
+   Light editorial palette — aligned with conilab.cn
+   铜=被动收入/暖灯，钢蓝=资产覆盖/冷灯
+   ================================================================ */
+:root {
+  /* Core palette — light editorial */
+  --void:        oklch(0.975 0.003 80);
+  --void-soft:   oklch(0.935 0.006 80);
+  --panel:       oklch(1.00 0 0);
+  --panel-soft:  oklch(0.96 0.004 80);
+  --rule:        oklch(0.88 0.006 80);
+  --ash:         oklch(0.78 0.010 80);
+  --mute:        oklch(0.52 0.012 250);
+  --paper:       oklch(0.20 0.008 250);
+  --paper-soft:  oklch(0.35 0.008 250);
+  --paper-hi:    oklch(0.14 0.008 250);
+
+  --lamp-warm:   oklch(0.58 0.13 55);
+  --lamp-warm-hi: oklch(0.65 0.11 58);
+  --lamp-warm-soft: oklch(0.50 0.11 52);
+  --lamp-cool:   oklch(0.53 0.08 240);
+  --lamp-cool-hi: oklch(0.61 0.07 240);
+  --lamp-cool-soft: oklch(0.46 0.07 240);
+
+  --danger:      oklch(0.55 0.17 25);
+  --danger-soft: oklch(0.62 0.14 25);
+
+  /* Font stacks */
+  --font-en:   'Cormorant Garamond', 'Times New Roman', serif;
+  --font-zh:   'Noto Serif SC', 'Songti SC', serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+
+  /* Legacy aliases — JS and inline styles reference these */
+  --bg-deep: var(--void);
+  --bg-panel: var(--panel);
+  --bg-card: var(--panel-soft);
+  --bg-input: var(--void-soft);
+  --amber: var(--lamp-warm);
+  --amber-dim: var(--lamp-warm-soft);
+  --cyan: var(--lamp-cool);
+  --cyan-dim: var(--lamp-cool-soft);
+  --red: var(--danger-soft);
+  --red-bright: var(--danger);
+  --grey-light: var(--paper-soft);
+  --grey-mid: var(--mute);
+  --grey-dark: var(--ash);
+  --text: var(--paper);
+  --text-dim: var(--mute);
+  --blue-cell: #9cc3ff;
+  --yellow-cell: #ffd166;
+  --grey-cell: var(--ash);
+  --dark-cell: oklch(0.94 0.004 80);
+  --border: var(--rule);
+}
+
+/* ================================================================
+   DARK MODE — override tokens
+   ================================================================ */
+html.dark {
+  --void:        oklch(0.12 0.008 260);
+  --void-soft:   oklch(0.16 0.010 260);
+  --panel:       oklch(0.17 0.010 260);
+  --panel-soft:  oklch(0.19 0.010 260);
+  --rule:        oklch(0.24 0.010 260);
+  --ash:         oklch(0.35 0.010 260);
+  --mute:        oklch(0.55 0.010 250);
+  --paper:       oklch(0.90 0.005 80);
+  --paper-soft:  oklch(0.72 0.006 80);
+  --paper-hi:    oklch(0.95 0.003 80);
+
+  --lamp-warm:   oklch(0.68 0.14 55);
+  --lamp-warm-hi: oklch(0.75 0.12 58);
+  --lamp-warm-soft: oklch(0.58 0.12 52);
+  --lamp-cool:   oklch(0.65 0.09 240);
+  --lamp-cool-hi: oklch(0.72 0.08 240);
+  --lamp-cool-soft: oklch(0.55 0.08 240);
+
+  --danger:      oklch(0.62 0.18 25);
+  --danger-soft: oklch(0.68 0.15 25);
+
+  --dark-cell:   oklch(0.22 0.008 260);
+}
+html.dark .hero-stat {
+  background: linear-gradient(135deg, rgba(14,14,28,0.6), rgba(20,20,42,0.4));
+  border: 1px solid rgba(156,195,255,0.12);
+  border-left: 4px solid rgba(156,195,255,0.3);
+  backdrop-filter: blur(16px);
+}
+html.dark .hero-stat .hero-number {
+  color: #b8d8ff;
+  text-shadow: 0 0 20px rgba(156,195,255,0.5), 0 0 50px rgba(156,195,255,0.2), 0 0 100px rgba(156,195,255,0.08);
+}
+html.dark .hero-stat .card-title {
+  color: rgba(255,255,255,0.5);
+}
+html.dark .hero-stat .hero-sub {
+  color: rgba(255,255,255,0.35);
+}
+html.dark .hero-stat .hero-label {
+  color: rgba(255,255,255,0.28);
+}
+html.dark .grid-stage {
+  background: rgba(10,10,20,0.6);
+  border-color: rgba(156,195,255,0.08);
+}
+html.dark .grid-stage h3 { color: rgba(255,255,255,0.5); }
+html.dark .grid-stage .text-dim { color: rgba(255,255,255,0.35); }
+html.dark .grid-stage .grid-legend .legend-item { color: rgba(255,255,255,0.4); }
+html.dark .grid-stage p { color: rgba(255,255,255,0.35) !important; }
+html.dark input,
+html.dark select {
+  background: var(--void-soft);
+  border-color: var(--rule);
+  color: var(--paper);
+}
+html.dark .toggle-btn {
+  color: var(--mute);
+}
+html.dark .toggle-btn.active {
+  color: var(--lamp-warm);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--mute);
+  transition: color 0.2s, border-color 0.2s;
+  display: flex; align-items: center; gap: 0.4rem;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  color: var(--paper);
+  border-color: var(--ash);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-zh);
+  font-weight: 400;
+  background: var(--void);
+  color: var(--paper);
+  min-height: 100vh;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+}
+.serif { font-family: var(--font-zh); }
+
+/* ================================================================
+   SETUP OVERLAY
+   ================================================================ */
+#setup-overlay {
+  position: fixed; inset: 0;
+  background: var(--void);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.6s ease;
+}
+#setup-overlay.hidden { display: none; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.setup-box {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 3.5rem 3rem;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.06);
+}
+.setup-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--lamp-warm), transparent);
+}
+.setup-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 1.2rem;
+}
+.setup-box h1 {
+  font-family: var(--font-zh);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--paper-hi);
+  letter-spacing: 0.08em;
+}
+.setup-box .subtitle {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--mute);
+  margin-bottom: 2.5rem;
+}
+.setup-field { margin-bottom: 1.5rem; text-align: left; }
+.setup-field label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-soft);
+}
+.setup-field input {
+  width: 100%; padding: 0.85rem 1rem;
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--paper);
+  font-size: 1.05rem;
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.setup-field input:focus {
+  border-color: var(--lamp-warm);
+  box-shadow: 0 0 0 2px oklch(0.58 0.13 55 / 0.12);
+}
+
+.btn-primary {
+  background: var(--lamp-warm);
+  color: oklch(1.00 0 0);
+  border: none;
+  padding: 0.85rem 2.5rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.3s;
+  box-shadow: 0 1px 4px oklch(0.58 0.13 55 / 0.25);
+}
+.btn-primary:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px oklch(0.58 0.13 55 / 0.35);
+}
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-simulate {
+  background: transparent;
+  color: var(--lamp-warm);
+  border: 1px solid var(--lamp-warm);
+  padding: 0.55rem 1.2rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+.btn-simulate:hover {
+  background: color-mix(in oklch, var(--lamp-warm) 12%, transparent);
+}
+.btn-simulate:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+.sim-hint {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--text-secondary, #888);
+  margin-bottom: 1rem;
+  padding: 0.8rem 1rem;
+  border-left: 2px solid var(--lamp-warm);
+  background: color-mix(in oklch, var(--lamp-warm) 6%, transparent);
+  border-radius: 0 4px 4px 0;
+}
+.sim-hint strong { color: var(--lamp-warm); }
+.sim-hint-sub {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* ================================================================
+   HEADER
+   ================================================================ */
+header {
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; gap: 1rem;
+  background: color-mix(in oklch, var(--panel) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+.lamp-icon {
+  width: 10px; height: 10px;
+  background: var(--lamp-warm);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--lamp-warm);
+  animation: pulse 3s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+header h1 {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--paper-soft);
+  letter-spacing: 0.02em;
+}
+.header-zh {
+  font-family: var(--font-zh);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+}
+
+/* ================================================================
+   TAB BAR — spine of small lamps
+   ================================================================ */
+.tab-bar {
+  display: flex; gap: 0;
+  padding: 0 2rem;
+  border-bottom: 1px solid var(--rule);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: color-mix(in oklch, var(--panel) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: sticky; top: 52px; z-index: 99;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 1rem 1.4rem 0.9rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--mute);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s;
+  position: relative;
+}
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 50%; transform: translateX(-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  color: var(--lamp-warm);
+  border-bottom-color: var(--lamp-warm);
+}
+.tab-btn.active::before {
+  background: var(--lamp-warm);
+  box-shadow: 0 0 4px var(--lamp-warm);
+}
+.tab-btn:hover:not(.active) {
+  color: var(--paper-soft);
+}
+
+/* ================================================================
+   TAB CONTENT
+   ================================================================ */
+.tab-content {
+  display: none;
+  padding: 2.5rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.tab-content.active { display: block; animation: slideUp 0.4s ease; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   CARDS — panel blocks with top glow
+   ================================================================ */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.8rem 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.04);
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--rule), transparent);
+}
+.card-title {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--lamp-warm-soft);
+  margin-bottom: 0.6rem;
+}
+.card-value {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.card-value.amber {
+  color: var(--lamp-warm);
+}
+.card-value.cyan {
+  color: var(--lamp-cool);
+}
+
+/* Hero stat — Freedom Days standout */
+.hero-stat {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--lamp-cool);
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.8rem 2.4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-stat .card-title {
+  color: var(--lamp-warm-soft);
+  margin-bottom: 0;
+  position: relative; z-index: 1;
+}
+.hero-stat .hero-number {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  font-size: 4.2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--lamp-cool);
+  position: relative; z-index: 1;
+}
+.hero-stat .hero-sub {
+  font-family: var(--font-zh);
+  font-size: 0.78rem;
+  color: var(--mute);
+  margin-top: 0.4rem;
+  position: relative; z-index: 1;
+}
+.hero-stat .hero-right {
+  margin-left: auto;
+  text-align: right;
+  position: relative; z-index: 1;
+}
+.hero-stat .hero-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--mute);
+  text-transform: uppercase;
+}
+
+/* Light mode: hide meteors */
+.meteor { display: none; }
+html.dark .meteor { display: block; }
+
+/* Meteors (dark mode only) */
+html.dark .meteor {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184,216,255,0.8), rgba(156,195,255,0.3), transparent);
+  border-radius: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.meteor:nth-child(1) {
+  width: 90px; top: 18%; left: -90px;
+  animation: shoot 6s 1s linear infinite;
+}
+.meteor:nth-child(2) {
+  width: 60px; top: 55%; left: -60px;
+  animation: shoot 8s 3.5s linear infinite;
+}
+.meteor:nth-child(3) {
+  width: 110px; top: 35%; left: -110px;
+  animation: shoot 5s 6s linear infinite;
+}
+.meteor:nth-child(4) {
+  width: 45px; top: 72%; left: -45px;
+  animation: shoot 7s 0.5s linear infinite;
+}
+@keyframes shoot {
+  0%   { transform: translateX(0) translateY(0); opacity: 0; }
+  3%   { opacity: 0.9; }
+  25%  { opacity: 0; }
+  100% { transform: translateX(1600px) translateY(30px); opacity: 0; }
+}
+.card-value.red {
+  color: var(--danger);
+}
+
+/* ================================================================
+   STATS GRID — 4 instrument readout cards
+   ================================================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stats-grid .card {
+  text-align: left;
+  padding: 1.5rem 1.6rem;
+}
+.stats-grid .card-desc {
+  font-family: var(--font-zh);
+  font-size: 0.75rem;
+  color: var(--mute);
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+/* ================================================================
+   LIFE GRID — dark stage + glowing cells + ritual animations
+   ================================================================ */
+/* Light mode: editorial cream stage */
+.grid-stage {
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.grid-stage h3 { color: var(--paper-soft); }
+.grid-stage .text-dim { color: var(--mute); }
+.grid-stage .grid-legend .legend-item { color: var(--mute); }
+.grid-stage p { color: var(--ash) !important; }
+
+.life-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10px, 1fr));
+  gap: 2px;
+  max-width: 100%;
+  padding: 0.5rem 0;
+}
+.life-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  min-width: 0;
+}
+.life-cell.past {
+  background: #16161e;
+}
+.life-cell.blue {
+  background: #9cc3ff;
+}
+.life-cell.yellow {
+  background: #ffd166;
+}
+.life-cell.dark {
+  background: #1e1e2e;
+}
+.life-cell.current {
+  animation: cell-breathe 2s ease-in-out infinite;
+  z-index: 2;
+  position: relative;
+}
+.life-cell.blue.current {
+  background: #d4eaff;
+}
+.life-cell.yellow.current {
+  background: #ffe9a0;
+}
+@keyframes cell-breathe {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255,255,255,0.5), 0 0 18px rgba(156,195,255,0.4);
+    transform: scale(1.1);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255,255,255,0.8), 0 0 30px rgba(156,195,255,0.5), 0 0 50px rgba(156,195,255,0.2);
+    transform: scale(1.6);
+  }
+}
+
+.life-cell.ignite {
+  animation: cell-ignite 0.55s ease-out forwards;
+}
+@keyframes cell-ignite {
+  0%  { transform: scale(0.3); opacity: 0.2; filter: brightness(0.5); box-shadow: none; }
+  35% { transform: scale(1.7); opacity: 1; filter: brightness(2.2); box-shadow: 0 0 18px rgba(255,244,214,0.8), 0 0 36px rgba(255,209,102,0.3); }
+  100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+}
+
+.life-cell.extinguish {
+  animation: cell-extinguish 0.7s ease-out forwards;
+}
+@keyframes cell-extinguish {
+  0%  { transform: scale(1); filter: brightness(1); }
+  25% { transform: scale(1.3); filter: brightness(1.5); background: #ff5e3a; box-shadow: 0 0 12px rgba(255,94,58,0.5); }
+  100% { transform: scale(1); filter: brightness(1); background: #1e1e2e; box-shadow: none; }
+}
+
+.grid-legend {
+  display: flex; gap: 1.2rem; margin-top: 1rem; flex-wrap: wrap;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.4);
+}
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* ================================================================
+   FORMULA DISPLAY — amber left-border monospace
+   ================================================================ */
+.formula-box {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--lamp-warm);
+  padding: 1rem 1.4rem;
+  border-radius: 0 4px 4px 0;
+  margin: 0.8rem 0;
+  color: var(--paper);
+  line-height: 1.8;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+/* ================================================================
+   RECORD TAB
+   ================================================================ */
+.record-form {
+  display: grid;
+  gap: 1.2rem;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+.form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+.form-group label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper-soft);
+}
+.form-group input, .form-group select, .form-group textarea {
+  padding: 0.75rem 1rem;
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--paper);
+  font-size: 0.92rem;
+  font-family: var(--font-mono);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: var(--lamp-warm);
+  box-shadow: 0 0 0 2px oklch(0.58 0.13 55 / 0.1);
+}
+.form-group select { appearance: none; cursor: pointer; }
+.form-group textarea {
+  resize: vertical; min-height: 60px;
+  font-family: var(--font-zh);
+}
+
+.toggle-group {
+  display: flex; gap: 2px;
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 3px;
+}
+.toggle-btn {
+  flex: 1; padding: 0.6rem 1.2rem;
+  border: none; border-radius: 3px;
+  background: transparent;
+  color: var(--mute);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.toggle-btn.active {
+  background: var(--panel);
+  color: var(--lamp-warm);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.06);
+}
+
+.impact-preview {
+  background: var(--void-soft);
+  border: 1px solid var(--danger-soft);
+  border-left: 3px solid var(--danger);
+  border-radius: 0 4px 4px 0;
+  padding: 1rem 1.2rem;
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+.impact-preview .red { color: var(--danger); }
+
+/* ================================================================
+   ASSET SOURCES
+   ================================================================ */
+.source-list { margin-top: 1rem; }
+.source-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.85rem 1.1rem;
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  margin-bottom: 0.6rem;
+  transition: border-color 0.2s;
+}
+.source-item:hover { border-color: var(--lamp-warm-soft); }
+.source-item .name {
+  font-family: var(--font-zh);
+  color: var(--paper);
+  font-size: 0.9rem;
+}
+.source-item .amount {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  color: var(--lamp-warm);
+  font-size: 0.88rem;
+}
+.source-item .delete-btn {
+  background: none; border: none;
+  color: var(--danger-soft);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 0.3rem;
+  transition: color 0.2s;
+}
+.source-item .delete-btn:hover { color: var(--danger); }
+
+/* ================================================================
+   SIMULATOR — sliders with amber glow
+   ================================================================ */
+/* ================================================================
+   HISTORY
+   ================================================================ */
+.heatmap-container { overflow-x: auto; margin-bottom: 1.5rem; }
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(53, 1fr);
+  gap: 2px;
+}
+.heatmap-cell {
+  aspect-ratio: 1; border-radius: 2px;
+  min-width: 8px;
+  background: oklch(0.94 0.004 80);
+  transition: background 0.2s;
+}
+.heatmap-cell.l1 { background: oklch(0.82 0.04 240); }
+.heatmap-cell.l2 { background: oklch(0.72 0.06 240); }
+.heatmap-cell.l3 { background: oklch(0.62 0.08 240); }
+.heatmap-cell.l4 { background: oklch(0.53 0.08 240); }
+
+.tx-list { max-height: 400px; overflow-y: auto; }
+.tx-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.88rem;
+  transition: background 0.2s;
+}
+.tx-item:hover { background: oklch(0.97 0.003 80); }
+.tx-item:last-child { border-bottom: none; }
+.tx-item .left { display: flex; flex-direction: column; gap: 0.15rem; }
+.tx-item .left > span:first-child {
+  font-family: var(--font-zh);
+  color: var(--paper);
+}
+.tx-item .category {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--mute);
+}
+.tx-item .amount-neg {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  color: var(--danger);
+  font-weight: 500;
+}
+.tx-item .amount-pos {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  color: var(--lamp-cool);
+  font-weight: 500;
+}
+.tx-item .tx-delete {
+  width: 24px; height: 24px;
+  margin-left: 0.8rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: var(--mute);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.tx-item .tx-delete:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: color-mix(in oklch, var(--danger) 10%, transparent);
+}
+
+/* ================================================================
+   SELF-CHECK
+   ================================================================ */
+.check-item {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.1rem 1.3rem;
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  margin-bottom: 0.7rem;
+  border-left: 3px solid var(--rule);
+  transition: all 0.3s;
+}
+.check-item.met { border-left-color: var(--lamp-cool); }
+.check-item.not-met { border-left-color: var(--danger); }
+.check-item .status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  margin-top: 0.45rem; flex-shrink: 0;
+}
+.check-item.met .status-dot {
+  background: var(--lamp-cool);
+}
+.check-item.not-met .status-dot {
+  background: var(--danger);
+}
+.check-item .check-text { flex: 1; }
+.check-item .check-title {
+  font-family: var(--font-zh);
+  font-size: 0.92rem;
+  color: var(--paper);
+  margin-bottom: 0.15rem;
+}
+.check-item .check-desc {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--mute);
+}
+
+/* ================================================================
+   MINI CHART / SPARKLINE
+   ================================================================ */
+.mini-chart {
+  width: 100%; height: 80px;
+  margin-top: 1rem;
+}
+.mini-chart canvas { width: 100%; height: 100%; }
+
+.sparkline { display: flex; align-items: flex-end; gap: 2px; height: 50px; margin-top: 0.8rem; }
+.spark-bar {
+  flex: 1; min-width: 2px;
+  background: var(--lamp-cool-soft);
+  border-radius: 1px 1px 0 0;
+  transition: height 0.3s;
+}
+.spark-bar:hover { background: var(--lamp-cool); }
+
+/* ================================================================
+   DASHBOARD TWO-COLUMN LAYOUT
+   ================================================================ */
+#tab-dashboard { max-width: 1400px; }
+
+/* Top-level stats — full width row */
+.stats-grid-top {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stats-grid-top .card {
+  text-align: left;
+  padding: 1.5rem 1.6rem;
+}
+.stats-grid-top .card-desc {
+  font-family: var(--font-zh);
+  font-size: 0.75rem;
+  color: var(--mute);
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+/* Two-column body below stats */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.dashboard-left {
+  min-width: 0;
+}
+.dashboard-right {
+  position: sticky;
+  top: 110px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.dashboard-right .card {
+  margin-bottom: 0;
+}
+.dashboard-right .life-grid {
+  grid-template-columns: repeat(auto-fill, minmax(10px, 1fr));
+  gap: 2px;
+}
+.dashboard-right .life-cell {
+  border-radius: 2px;
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 1100px) {
+  .dashboard-layout { grid-template-columns: 340px 1fr; }
+  .stats-grid-top { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 900px) {
+  .stats-grid-top { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-right {
+    position: static;
+  }
+}
+@media (max-width: 768px) {
+  .stats-grid-top { grid-template-columns: repeat(2, 1fr); }
+  .life-grid { grid-template-columns: repeat(24, 1fr); }
+  header h1 { font-size: 0.95rem; }
+  .tab-content { padding: 1.5rem 1rem; }
+  .setup-box { padding: 2.5rem 1.8rem; }
+  .card { padding: 1.4rem 1.3rem; }
+  .tab-btn { padding: 0.8rem 1rem; font-size: 0.62rem; letter-spacing: 0.1em; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  header { padding: 0.8rem 1rem; gap: 0.6rem; }
+  header h1 { font-size: 0.85rem; }
+  .header-zh { font-size: 0.75rem; }
+  .tab-bar { padding: 0 1rem; }
+  .tab-content { padding: 1.2rem 0.8rem; }
+
+  /* Hero — stack vertical, formula below */
+  .hero-stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1.4rem 1.2rem;
+  }
+  .hero-stat .hero-number { font-size: 3rem; }
+  .hero-stat .hero-sub { font-size: 0.72rem; }
+  .hero-stat .hero-right {
+    margin-left: 0;
+    text-align: left;
+  }
+  .hero-stat .hero-label { font-size: 0.58rem; letter-spacing: 0.08em; }
+
+  /* Three stat cards — compact row */
+  .stats-grid-top {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .stats-grid-top .card {
+    padding: 0.9rem 0.7rem;
+  }
+  .stats-grid-top .card-title {
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+  }
+  .stats-grid-top .card-value {
+    font-size: 1.5rem;
+  }
+  .stats-grid-top .card-desc {
+    font-size: 0.62rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Cards general */
+  .card { padding: 1.1rem 1rem; margin-bottom: 1rem; }
+  .card-value { font-size: 1.8rem; }
+
+  /* Dashboard layout */
+  .dashboard-layout { gap: 1rem; }
+}
+
+/* ================================================================
+   SCROLLBAR
+   ================================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: oklch(0.82 0.005 80); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.70 0.008 80); }
+
+/* ================================================================
+   UTILITY
+   ================================================================ */
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.mt-8 { margin-top: 0.5rem; }
+.mt-16 { margin-top: 1rem; }
+.mb-16 { margin-bottom: 1rem; }
+.text-dim { color: var(--mute); }
+.text-sm {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+
+/* Export/Import */
+.action-btns { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.btn-secondary {
+  padding: 0.55rem 1.1rem; border-radius: 3px;
+  background: var(--void-soft);
+  border: 1px solid var(--rule);
+  color: var(--mute);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-secondary:hover {
+  border-color: var(--lamp-cool);
+  color: var(--lamp-cool);
+}
+
+/* Date quick-pick */
+.date-pick {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.date-chip {
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--void-soft);
+  color: var(--mute);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.date-chip:hover {
+  border-color: var(--lamp-warm-soft);
+  color: var(--paper);
+}
+.date-chip.active {
+  border-color: var(--lamp-warm);
+  color: var(--lamp-warm);
+  background: color-mix(in oklch, var(--lamp-warm) 8%, var(--void-soft));
+}
+.date-chip-custom {
+  flex: 1;
+  min-width: 120px;
+}
+.date-chip-custom input {
+  width: 100%;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.6rem;
+}
+
+/* Auth Gate */
+#auth-gate{position:fixed;inset:0;z-index:99999;background:#0e0e1c;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.2rem;font-family:'Noto Serif SC',serif;}
+#auth-gate.hidden{display:none}
+#auth-gate .lamp-icon{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle,oklch(0.82 0.12 55),oklch(0.55 0.08 55));box-shadow:0 0 18px oklch(0.72 0.10 55/0.5);}
+#auth-gate h2{color:oklch(0.82 0.012 80);font-size:1.1rem;font-weight:400;letter-spacing:0.08em;margin:0;}
+#auth-gate input{width:220px;padding:0.6rem 1rem;border:1px solid oklch(0.3 0.01 80);border-radius:8px;background:oklch(0.14 0.005 80);color:oklch(0.85 0.01 80);font-size:0.95rem;text-align:center;outline:none;font-family:'JetBrains Mono',monospace;}
+#auth-gate input:focus{border-color:oklch(0.55 0.08 55);}
+#auth-gate .auth-err{color:oklch(0.65 0.18 25);font-size:0.8rem;height:1rem;margin:0;}
+</style>
+</head>
+<body>
+
+<!-- Auth Gate -->
+<div id="auth-gate">
+  <div class="lamp-icon"></div>
+  <h2>LUMEN ALMANAC</h2>
+  <input id="auth-input" type="password" placeholder="Access Key" autofocus>
+  <p class="auth-err" id="auth-err"></p>
+</div>
+
+<!-- Loading Overlay — shown during cloud init -->
+<div id="loading-overlay" style="position:fixed;inset:0;background:var(--void);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;">
+  <div class="lamp-icon" style="width:32px;height:32px;"></div>
+  <p id="loading-msg" style="font-family:var(--font-zh);color:var(--mute);font-size:0.9rem;">正在同步云端数据…</p>
+</div>
+
+<!-- Setup Overlay -->
+<div id="setup-overlay" class="hidden">
+  <div class="setup-box">
+    <div class="setup-eyebrow">Lumen Almanac</div>
+    <h1>财富自由指路灯</h1>
+    <p class="subtitle">Light the path to freedom</p>
+    <div class="setup-field">
+      <label>当前可变现资产 (元，可选)</label>
+      <input type="number" id="setup-assets" placeholder="0" min="0">
+    </div>
+    <p style="color:var(--text-dim);font-size:0.8rem;margin-bottom:1.5rem;line-height:1.5;">存款、余额宝等随时可取的钱。<br>没有就填 0，后续在 Assets 页可改。</p>
+    <button class="btn-primary" onclick="completeSetup()">开始记账</button>
+  </div>
+</div>
+
+<!-- Main App -->
+<header>
+  <div class="lamp-icon"></div>
+  <h1>Lumen Almanac</h1>
+  <span class="header-zh">财富自由指路灯</span>
+  <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Dark</button>
+</header>
+
+<nav class="tab-bar">
+  <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+  <button class="tab-btn" data-tab="assets">Assets</button>
+  <button class="tab-btn" data-tab="history">History</button>
+  <button class="tab-btn" data-tab="selfcheck">Check</button>
+</nav>
+
+<!-- Dashboard -->
+<div class="tab-content active" id="tab-dashboard">
+  <!-- ── Hero: Freedom Days ── -->
+  <div class="card hero-stat">
+    <span class="meteor"></span>
+    <span class="meteor"></span>
+    <span class="meteor"></span>
+    <span class="meteor"></span>
+    <div>
+      <div class="card-title">Freedom Days</div>
+      <div class="hero-number" id="dash-freedom-days">0</div>
+      <div class="hero-sub">你的自由还能撑多久</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-label">(资产 + 净储蓄) ÷ 日均消费</div>
+    </div>
+  </div>
+
+  <!-- ── Secondary stats ── -->
+  <div class="stats-grid-top">
+    <div class="card">
+      <div class="card-title">Daily Burn</div>
+      <div class="card-value amber" id="dash-daily-burn">0</div>
+      <div class="card-desc">元/天</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Passive Ratio</div>
+      <div class="card-value" id="dash-passive-ratio">0%</div>
+      <div class="card-desc">日被动收入 / 日均消费</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Track Days</div>
+      <div class="card-value" id="dash-record-days" style="color: var(--grey-light)">0</div>
+      <div class="card-desc">持续追踪</div>
+    </div>
+  </div>
+
+  <!-- ── Body: left record / right grid+context ── -->
+  <div class="dashboard-layout">
+
+    <div class="dashboard-left">
+      <div class="card">
+        <div class="toggle-group mb-16">
+          <button class="toggle-btn active" id="toggle-expense" onclick="setRecordType('expense')">支出</button>
+          <button class="toggle-btn" id="toggle-income" onclick="setRecordType('income')">收入</button>
+          <button class="toggle-btn" id="toggle-simulate" onclick="setRecordType('simulate')">模拟</button>
+        </div>
+
+        <div id="expense-form" class="record-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>金额 (元)</label>
+              <input type="number" id="exp-amount" placeholder="0.00" min="0" step="0.01" oninput="previewImpact()">
+            </div>
+            <div class="form-group">
+              <label>分类</label>
+              <select id="exp-category">
+                <option value="早餐">早餐</option>
+                <option value="午餐">午餐</option>
+                <option value="晚餐">晚餐</option>
+                <option value="购物">购物</option>
+                <option value="交通">交通</option>
+                <option value="娱乐">娱乐</option>
+                <option value="成长投资">成长投资</option>
+                <option value="医疗">医疗</option>
+                <option value="人情">人情</option>
+                <option value="日用">日用</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>日期</label>
+            <div class="date-pick">
+              <button type="button" class="date-chip active" onclick="pickDate('exp', 'today', this)">今天</button>
+              <button type="button" class="date-chip" onclick="pickDate('exp', 'yesterday', this)">昨天</button>
+              <button type="button" class="date-chip" onclick="pickDate('exp', 'dby', this)">前天</button>
+              <div class="date-chip-custom">
+                <input type="date" id="exp-date" onfocus="pickDate('exp','custom',null)">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>备注</label>
+            <input type="text" id="exp-note" placeholder="可选">
+          </div>
+          <div class="impact-preview" id="impact-preview" style="display:none">
+            <div><strong>戴维斯三杀预览:</strong></div>
+            <div class="red mt-8" id="impact-text"></div>
+          </div>
+          <button class="btn-primary" onclick="addExpense()">Record Expense</button>
+        </div>
+
+        <div id="income-form" class="record-form" style="display:none">
+          <div class="form-row">
+            <div class="form-group">
+              <label>金额 (元)</label>
+              <input type="number" id="inc-amount" placeholder="0.00" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>来源</label>
+              <input type="text" id="inc-source" placeholder="工资/投资/副业...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>日期</label>
+            <div class="date-pick">
+              <button type="button" class="date-chip active" onclick="pickDate('inc', 'today', this)">今天</button>
+              <button type="button" class="date-chip" onclick="pickDate('inc', 'yesterday', this)">昨天</button>
+              <button type="button" class="date-chip" onclick="pickDate('inc', 'dby', this)">前天</button>
+              <div class="date-chip-custom">
+                <input type="date" id="inc-date" onfocus="pickDate('inc','custom',null)">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:8px;">
+              <input type="checkbox" id="inc-passive"> 这是被动收入
+            </label>
+          </div>
+          <button class="btn-primary" onclick="addIncome()">Record Income</button>
+        </div>
+
+        <div id="simulate-form" class="record-form" style="display:none">
+          <p class="sim-hint">
+            <strong>不会真的扣钱。</strong>输入一个金额，看看自由天数的格子要少几格。<br>
+            <span class="sim-hint-sub">动画结束后自动复原，适合在"要不要买"之前预演一下。</span>
+          </p>
+          <div class="form-group">
+            <label>模拟金额 (元)</label>
+            <input type="number" id="sim-amount" placeholder="0.00" min="0" step="0.01" oninput="previewSimImpact()">
+          </div>
+          <div class="impact-preview" id="sim-impact-preview" style="display:none">
+            <div><strong>影响预览:</strong></div>
+            <div class="red mt-8" id="sim-impact-text"></div>
+          </div>
+          <button type="button" class="btn-primary" onclick="simulateExpense()">▶ 跑模拟</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex-between">
+          <div class="card-title">Today vs Average</div>
+          <span class="mono text-sm" id="today-vs-avg"></span>
+        </div>
+        <div class="formula-box" id="today-summary"></div>
+      </div>
+
+    </div>
+
+    <div class="dashboard-right">
+      <div class="card grid-stage">
+        <div class="flex-between mb-16">
+          <h3 style="font-family:var(--font-zh);font-size:0.9rem;font-weight:500;">自由天数</h3>
+          <span class="text-sm text-dim" id="grid-summary"></span>
+        </div>
+        <div class="life-grid" id="dash-life-grid"></div>
+        <canvas id="grid-anim-canvas" style="display:none;border-radius:2px"></canvas>
+        <div class="grid-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#9cc3ff"></div>资产自由</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#ffd166"></div>收入自由</div>
+        </div>
+        <p style="color:rgba(255,255,255,0.35);font-size:0.72rem;margin-top:0.5rem;">每格 = 1天自由 · 赚钱/省钱 → 格子生长 · 大笔开支 → 格子消失</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Assets Tab -->
+<div class="tab-content" id="tab-assets">
+  <div class="card">
+    <div class="card-title">Net Liquid Assets</div>
+    <div class="form-row mt-8">
+      <div class="form-group" style="flex:1">
+        <input type="number" id="asset-total" placeholder="当前总资产" min="0" step="100">
+      </div>
+      <button class="btn-primary" onclick="updateAssets()" style="align-self:flex-end">Update</button>
+    </div>
+    <div class="text-sm text-dim mt-8" id="asset-updated-at"></div>
+  </div>
+
+  <div class="card">
+    <div class="flex-between">
+      <div class="card-title">Passive Income Sources</div>
+      <span class="mono text-sm" style="color:var(--amber)" id="passive-total"></span>
+    </div>
+    <div class="form-row mt-16">
+      <div class="form-group">
+        <label>名称</label>
+        <input type="text" id="source-name" placeholder="租金/股息/版税...">
+      </div>
+      <div class="form-group">
+        <label>月收入 (元)</label>
+        <input type="number" id="source-amount" placeholder="0" min="0">
+      </div>
+      <button class="btn-primary" onclick="addPassiveSource()" style="align-self:flex-end">Add</button>
+    </div>
+    <div class="source-list" id="source-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Asset Health</div>
+    <div class="formula-box">日被动收入 = <span id="calc-passive-daily">0</span> 元<br>日均消费 = <span id="calc-daily-burn">0</span> 元<br>覆盖率 = <span id="calc-ratio">0</span>%<br><span id="calc-verdict" style="color:var(--amber)"></span></div>
+  </div>
+</div>
+
+<!-- History Tab -->
+<div class="tab-content" id="tab-history">
+  <div class="card">
+    <div class="card-title">Spending Heatmap (Past Year)</div>
+    <div class="heatmap-container">
+      <div class="heatmap" id="heatmap"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="flex-between mb-16">
+      <div class="card-title">Transactions</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <select id="filter-category" onchange="renderHistory()" style="padding:0.4rem 0.7rem;background:var(--void-soft);border:1px solid var(--rule);border-radius:3px;color:var(--paper);font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.04em;">
+          <option value="all">全部分类</option>
+          <option value="早餐">早餐</option>
+          <option value="午餐">午餐</option>
+          <option value="晚餐">晚餐</option>
+          <option value="购物">购物</option>
+          <option value="交通">交通</option>
+          <option value="娱乐">娱乐</option>
+          <option value="成长投资">成长投资</option>
+          <option value="医疗">医疗</option>
+          <option value="人情">人情</option>
+          <option value="日用">日用</option>
+          <option value="其他">其他</option>
+          <option value="income">收入</option>
+        </select>
+      </div>
+    </div>
+    <div class="tx-list" id="tx-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Daily Average Trend</div>
+    <canvas id="avg-chart" height="120" style="width:100%;"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="flex-between">
+      <div class="card-title">Data Management</div>
+    </div>
+    <div class="action-btns mt-8">
+      <button id="sync-btn" class="btn-primary" onclick="cloudSync()" style="min-width:120px">☁️ 同步</button>
+      <button class="btn-secondary" onclick="exportExcel()">导出 Excel</button>
+      <button class="btn-secondary" onclick="exportData()">导出 JSON</button>
+      <button class="btn-secondary" onclick="document.getElementById('import-file').click()">导入 JSON</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="btn-secondary" onclick="if(confirm('确定要清除所有数据吗？此操作不可撤销！'))clearAllData()">清除数据</button>
+    </div>
+  </div>
+</div>
+
+<!-- Self-Check Tab -->
+<div class="tab-content" id="tab-selfcheck">
+  <div class="card">
+    <div class="card-title">Freedom Checklist</div>
+    <h3 style="font-family:var(--font-zh);color:var(--paper-hi);margin-bottom:1.2rem;font-size:1.1rem;font-weight:600;">财富自由自检清单</h3>
+    <div id="check-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Core Formulas</div>
+    <div class="formula-box">日均消费 = 总支出 ÷ 记录天数</div>
+    <div class="formula-box">自由天数 = (可变现资产 + 收入净储蓄) ÷ 日均消费</div>
+    <div class="formula-box">被动覆盖率 = 日被动收入 ÷ 日均消费 (≥1 即自由)</div>
+  </div>
+</div>
+
+<script>
+// ===== AUTH GATE =====
+(function(){
+  const AUTH_KEY = 'lumen_auth';
+  const PASS_HASH = '2cd895'; // first 6 hex chars of simple hash
+  function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return(h>>>0).toString(16);}
+  function check(p){return simpleHash(p).slice(0,6)===PASS_HASH;}
+  if(localStorage.getItem(AUTH_KEY)==='ok'){
+    document.getElementById('auth-gate').classList.add('hidden');
+  } else {
+    document.getElementById('auth-input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){
+        if(check(this.value)){
+          localStorage.setItem(AUTH_KEY,'ok');
+          document.getElementById('auth-gate').classList.add('hidden');
+        } else {
+          document.getElementById('auth-err').textContent='密码错误';
+          this.value='';
+        }
+      }
+    });
+  }
+})();
+
+// ===== DATA LAYER =====
+const SYNC_API = '';  // same-origin Pages Functions
+const SYNC_TOKEN = 'YOUR_SYNC_TOKEN'; // 部署时替换为自己的 token,需与后端环境变量 SYNC_TOKEN 一致
+const STORAGE_KEY = 'lumen_data';
+const CATEGORIES = {
+  '早餐': '早餐', '午餐': '午餐', '晚餐': '晚餐',
+  '购物': '购物', '交通': '交通', '娱乐': '娱乐',
+  '成长投资': '成长投资', '医疗': '医疗', '人情': '人情',
+  '日用': '日用', '其他': '其他',
+  food: '餐饮', transport: '交通', housing: '日用',
+  entertainment: '娱乐', shopping: '购物', health: '医疗',
+  education: '成长投资', other: '其他'
+};
+
+function getDefaultData() {
+  return {
+    profile: { age: 28, target_age: 80 },
+    assets: { total: 0, updated_at: null },
+    passive_sources: [],
+    expenses: [],
+    incomes: [],
+    deleted_ids: [],
+    first_record_date: null
+  };
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch { return null; }
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  if (saveData.__skip) return;
+  // Debounced cloud push — use merge (POST) not overwrite (PUT)
+  clearTimeout(saveData._t);
+  saveData._t = setTimeout(() => {
+    fetch(`${SYNC_API}/sync/push?token=${SYNC_TOKEN}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch(() => {});
+  }, 3000);
+}
+
+let appData = loadData();
+
+// ===== THEME TOGGLE =====
+function applyTheme(dark) {
+  document.documentElement.classList.toggle('dark', dark);
+  const btn = document.getElementById('theme-btn');
+  btn.textContent = dark ? '☀️ Light' : '🌙 Dark';
+}
+function toggleTheme() {
+  const isDark = !document.documentElement.classList.contains('dark');
+  localStorage.setItem('lumen_theme', isDark ? 'dark' : 'light');
+  applyTheme(isDark);
+}
+// Init theme from saved preference
+(function() {
+  const saved = localStorage.getItem('lumen_theme');
+  if (saved === 'dark') applyTheme(true);
+})();
+
+// ===== SETUP =====
+// ===== DATE QUICK-PICK =====
+function getDateStr(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() - offset);
+  return d.toISOString().split('T')[0];
+}
+
+function pickDate(prefix, mode, btn) {
+  const input = document.getElementById(prefix + '-date');
+  const container = btn ? btn.closest('.date-pick') : input.closest('.date-pick');
+  container.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active'));
+  if (mode === 'today') { input.value = getDateStr(0); btn.classList.add('active'); }
+  else if (mode === 'yesterday') { input.value = getDateStr(1); btn.classList.add('active'); }
+  else if (mode === 'dby') { input.value = getDateStr(2); btn.classList.add('active'); }
+  // 'custom' — user picks via native input, no chip highlighted
+}
+
+function checkSetup() {
+  if (!appData) {
+    document.getElementById('setup-overlay').classList.remove('hidden');
+  } else {
+    refreshAll();
+  }
+}
+
+function completeSetup() {
+  const assets = parseFloat(document.getElementById('setup-assets').value) || 0;
+
+  appData = getDefaultData();
+  appData.assets.total = assets;
+  appData.assets.updated_at = new Date().toISOString();
+  appData.first_record_date = new Date().toISOString().split('T')[0];
+  saveData(appData);
+
+  document.getElementById('setup-overlay').classList.add('hidden');
+  refreshAll();
+}
+
+// ===== CALCULATIONS =====
+function getTotalExpenses() {
+  return appData.expenses.reduce((s, e) => s + e.amount, 0);
+}
+
+function getTotalIncome() {
+  return appData.incomes.reduce((s, inc) => s + inc.amount, 0);
+}
+
+function getNetSavings() {
+  return getTotalIncome() - getTotalExpenses();
+}
+
+function getRecordDays() {
+  if (!appData.first_record_date) return 1;
+  const first = new Date(appData.first_record_date);
+  const now = new Date();
+  const days = Math.max(1, Math.ceil((now - first) / 86400000));
+  return days;
+}
+
+function getDailyBurn() {
+  const total = getTotalExpenses();
+  const days = getRecordDays();
+  return days > 0 ? total / days : 0;
+}
+
+function getFreedomDays() {
+  const burn = getDailyBurn();
+  if (burn <= 0) return { total: Infinity, assetDays: Infinity, incomeDays: 0 };
+  const assetDays = appData.assets.total / burn;
+  const netSavings = getNetSavings();
+  const incomeDays = netSavings > 0 ? Math.floor(netSavings / burn) : 0;
+  return { total: assetDays + incomeDays, assetDays, incomeDays };
+}
+
+function getDailyPassive() {
+  return appData.passive_sources.reduce((s, p) => s + p.monthly_amount / 30, 0);
+}
+
+function getPassiveRatio() {
+  const burn = getDailyBurn();
+  if (burn <= 0) return 0;
+  return getDailyPassive() / burn;
+}
+
+function getTodaySpending() {
+  const today = new Date().toISOString().split('T')[0];
+  return appData.expenses.filter(e => e.date === today).reduce((s, e) => s + e.amount, 0);
+}
+
+// ===== CANVAS GRID ANIMATION ENGINE =====
+const _sleep = ms => new Promise(r => setTimeout(r, ms));
+const MAX_GRID_CELLS = 1825;
+
+function getGridState() {
+  const burn = getDailyBurn();
+  if (burn === 0) return { blueDays: 0, yellowDays: 0, totalLit: 0, rawTotal: 0, isOverflow: false };
+  const freedom = getFreedomDays();
+  const rawAsset = freedom.assetDays === Infinity ? MAX_GRID_CELLS : Math.floor(freedom.assetDays);
+  const rawIncome = Math.floor(freedom.incomeDays);
+  const rawTotal = rawAsset + rawIncome;
+  const totalLit = Math.min(rawTotal, MAX_GRID_CELLS);
+  const blueDays = Math.min(rawAsset, totalLit);
+  const yellowDays = totalLit - blueDays;
+  const isOverflow = rawTotal > MAX_GRID_CELLS;
+  return { blueDays, yellowDays, totalLit, rawTotal, isOverflow };
+}
+
+let _animating = false;
+
+/* --- palette --- */
+const _GC = {
+  unlit:'#1e1e2e', blue:'#9cc3ff', blueBloom:'#e0f0ff',
+  gold:'#ffd166', goldBloom:'#fff4d6', ash:'#5a4030', blueAsh:'#4a5a6a',
+};
+const _eoq = t => 1 - (1-t)**4;
+const _lrp = (a,b,t) => a+(b-a)*t;
+const _hx = h => { const n=parseInt(h.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; };
+const _mx = (a,b,t) => [Math.round(_lrp(a[0],b[0],t)),Math.round(_lrp(a[1],b[1],t)),Math.round(_lrp(a[2],b[2],t))];
+const _rg = a => `rgb(${a[0]},${a[1]},${a[2]})`;
+const _R = {
+  unlit:_hx(_GC.unlit), blue:_hx(_GC.blue), blueBloom:_hx(_GC.blueBloom),
+  gold:_hx(_GC.gold), goldBloom:_hx(_GC.goldBloom), ash:_hx(_GC.ash), blueAsh:_hx(_GC.blueAsh),
+};
+
+/* --- timing --- */
+const _IGN_MS=2000, _EXT_MS=2600, _FRATE=8.0, _SETTLE=1100;
+/* Total stagger window (ms) for a given delta — NOT per-cell interval.
+   Small deltas: dramatic pacing.  Large deltas: cap at 5s. */
+const _staggerMs = d => d<=3?d*780:d<=8?d*500:d<=20?d*300:d<=60?d*140:Math.min(5000,d*15);
+const _pscl = d => d>=500?3.6:d>=100?5:d>=30?7:d>=10?8.5:10;
+
+/* --- envelope & per-cell animation frames --- */
+const _env = (t,atk,rel) => {
+  if(t>=1)return 0;
+  return t<atk ? _eoq(t/atk) : ((1-(t-atk)/(1-atk))**rel);
+};
+const _ignF = (t,isB) => {
+  const base=isB?_R.blue:_R.gold, bloom=isB?_R.blueBloom:_R.goldBloom, fin=isB?_GC.blue:_GC.gold;
+  if(t>=1) return {color:fin, halo:0.08, scale:1, isB};
+  const e=_env(t,0.10,1.4), ct=_eoq(Math.min(1,t/0.22));
+  let c=_mx(_R.unlit,base,ct);
+  c=_mx(c,bloom,e*e*0.45);
+  return {color:_rg(c), halo:e*0.48, scale:1+e*0.16, isB};
+};
+const _extF = (t,isB) => {
+  const base=isB?_R.blue:_R.gold, ashC=isB?_R.blueAsh:_R.ash;
+  if(t>=1) return {color:_GC.unlit, halo:0, scale:1, isB};
+  const e=_env(t,0.18,1.4);
+  let c;
+  if(t<0.65) c=_mx(base,ashC,t/0.65);
+  else c=_mx(ashC,_R.unlit,_eoq((t-0.65)/0.35));
+  return {color:_rg(c), halo:e*0.30, scale:1+e*0.10, isB};
+};
+
+/* --- animation state --- */
+const _ga = {
+  ctx:null, dpr:1, rafId:null, anims:new Map(),
+  sz:0, gap:0, cols:0, ox:0, oy:0, cw:0, ch:0,
+  total:0, blue:0, lit:0,
+  cam:{s:1,tx:0,ty:0}, camT:{s:1,tx:0,ty:0},
+  lt:0, dirty:true, bg:'#14141e',
+};
+const _cxy = i => {
+  const step=_ga.sz+_ga.gap;
+  return {x:_ga.ox+(i%_ga.cols)*step, y:_ga.oy+((i/_ga.cols)|0)*step};
+};
+const _scam = (idx,sc) => {
+  const {x,y}=_cxy(idx), cx=x+_ga.sz/2, cy=y+_ga.sz/2;
+  _ga.camT={s:sc, tx:sc*(_ga.cw/2-cx), ty:sc*(_ga.ch/2-cy)};
+};
+const _rcam = () => { _ga.camT={s:1,tx:0,ty:0}; };
+const _cdone = () => Math.abs(_ga.cam.s-_ga.camT.s)<0.003 && Math.abs(_ga.cam.tx-_ga.camT.tx)<0.4 && Math.abs(_ga.cam.ty-_ga.camT.ty)<0.4;
+
+/* --- draw --- */
+function _dStatic() {
+  const {ctx,total,blue,lit,anims,cols,sz,gap,ox,oy}=_ga, step=sz+gap;
+  const vb=_visibleBounds();
+  // Compute visible row/col range for fast culling
+  const c0=Math.max(0,Math.floor((vb.l-ox)/step)), c1=Math.min(cols-1,Math.ceil((vb.r-ox)/step));
+  const r0=Math.max(0,Math.floor((vb.t-oy)/step)), r1=Math.ceil((vb.b-oy)/step);
+  const segs=[[_GC.blue,0,Math.min(blue,lit)],[_GC.gold,Math.min(blue,lit),lit],[_GC.unlit,lit,total]];
+  for(const [col,f,t] of segs) {
+    if(t<=f) continue;
+    ctx.fillStyle=col; ctx.beginPath();
+    for(let row=r0;row<=r1;row++) {
+      const rowStart=row*cols, rowEnd=rowStart+cols;
+      const segStart=Math.max(f,rowStart+c0), segEnd=Math.min(t,rowStart+c1+1);
+      for(let i=segStart;i<segEnd;i++) {
+        if(i>=rowEnd) break;
+        if(anims.has(i)) continue;
+        ctx.rect(ox+(i%cols)*step, oy+row*step, sz, sz);
+      }
+    }
+    ctx.fill();
+  }
+}
+function _visibleBounds() {
+  const {cw,ch,cam:{s,tx,ty}}=_ga, cx=cw/2, cy=ch/2;
+  const ox=(- cx*(1-s)-tx)/s, oy=(- cy*(1-s)-ty)/s;
+  return {l:ox,t:oy,r:ox+cw/s,b:oy+ch/s};
+}
+function _dAnims() {
+  const {ctx,anims,sz,gap,ox,oy,cols}=_ga, now=performance.now(), step=sz+gap;
+  const n=anims.size, maxH=16, hs=n>maxH?Math.ceil(n/maxH):1;
+  const vb=_visibleBounds(), margin=sz*6;
+  let c=0;
+  for(const [i,a] of anims) {
+    const px=ox+(i%cols)*step, py=oy+((i/cols)|0)*step;
+    if(px+sz<vb.l-margin||px>vb.r+margin||py+sz<vb.t-margin||py>vb.b+margin){c++;continue;}
+    const t=Math.min(1,(now-a.t0)/a.dur), f=a.anim(t,a.isB);
+    const cx=px+sz/2, cy=py+sz/2;
+    if(f.halo>0.02 && c%hs===0) {
+      const hr=sz*(2.0+f.halo*3.2);
+      const g=ctx.createRadialGradient(cx,cy,0,cx,cy,hr);
+      if(f.isB) {
+        g.addColorStop(0,`rgba(200,220,255,${(0.42*f.halo).toFixed(3)})`);
+        g.addColorStop(0.4,`rgba(156,195,255,${(0.20*f.halo).toFixed(3)})`);
+        g.addColorStop(1,'rgba(100,150,255,0)');
+      } else {
+        g.addColorStop(0,`rgba(255,244,214,${(0.42*f.halo).toFixed(3)})`);
+        g.addColorStop(0.4,`rgba(255,209,102,${(0.20*f.halo).toFixed(3)})`);
+        g.addColorStop(1,'rgba(255,139,61,0)');
+      }
+      ctx.globalCompositeOperation='lighter';
+      ctx.fillStyle=g;
+      ctx.fillRect(cx-hr,cy-hr,hr*2,hr*2);
+      ctx.globalCompositeOperation='source-over';
+    }
+    ctx.fillStyle=f.color;
+    const s=f.scale, w=sz*s, h=sz*s;
+    ctx.fillRect(cx-w/2,cy-h/2,w,h);
+    c++;
+  }
+}
+function _dToday() {
+  const idx=_ga.lit-1;
+  if(idx<0||idx>=_ga.total||_ga.anims.has(idx)) return;
+  const {ctx,sz}=_ga, {x,y}=_cxy(idx);
+  const cx=x+sz/2, cy=y+sz/2;
+  const br=0.5+0.5*Math.sin(performance.now()*0.004);
+  const int=0.55+0.45*br, isB=idx<_ga.blue;
+  const hr=sz*(3.0+br*2.0);
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,hr);
+  if(isB) {
+    g.addColorStop(0,`rgba(200,230,255,${(0.55*int).toFixed(3)})`);
+    g.addColorStop(0.35,`rgba(156,195,255,${(0.28*int).toFixed(3)})`);
+    g.addColorStop(1,'rgba(100,150,255,0)');
+  } else {
+    g.addColorStop(0,`rgba(255,244,214,${(0.55*int).toFixed(3)})`);
+    g.addColorStop(0.35,`rgba(255,209,102,${(0.28*int).toFixed(3)})`);
+    g.addColorStop(1,'rgba(255,139,61,0)');
+  }
+  ctx.globalCompositeOperation='lighter';
+  ctx.fillStyle=g;
+  ctx.fillRect(cx-hr,cy-hr,hr*2,hr*2);
+  ctx.globalCompositeOperation='source-over';
+  const s=1+br*0.10, w=sz*s, h=sz*s;
+  ctx.fillStyle=isB?_GC.blueBloom:_GC.goldBloom;
+  ctx.fillRect(cx-w/2,cy-h/2,w,h);
+}
+function _dFrame() {
+  const {ctx,dpr,cw,ch,cam,bg}=_ga;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle=bg; ctx.fillRect(0,0,cw,ch);
+  const cx=cw/2, cy=ch/2;
+  ctx.setTransform(dpr*cam.s,0,0,dpr*cam.s, dpr*(cx-cx*cam.s+cam.tx), dpr*(cy-cy*cam.s+cam.ty));
+  _dStatic(); _dAnims(); _dToday();
+}
+
+/* --- loop --- */
+function _startLoop() {
+  _ga.dirty=true; _ga.lt=performance.now();
+  const tick=now=>{
+    const dt=Math.min(0.05,(now-_ga.lt)/1000); _ga.lt=now;
+    const k=1-Math.exp(-_FRATE*dt);
+    _ga.cam.s=_lrp(_ga.cam.s,_ga.camT.s,k);
+    _ga.cam.tx=_lrp(_ga.cam.tx,_ga.camT.tx,k);
+    _ga.cam.ty=_lrp(_ga.cam.ty,_ga.camT.ty,k);
+    if(_ga.anims.size||_ga.dirty||!_cdone()) { _dFrame(); _ga.dirty=false; }
+    for(const [idx,a] of _ga.anims) {
+      if(now-a.t0>=a.dur) {
+        if(a.type==='ignite') _ga.lit=Math.max(_ga.lit,idx+1);
+        else _ga.lit=Math.min(_ga.lit,idx);
+        _ga.anims.delete(idx);
+      }
+    }
+    _ga.rafId=requestAnimationFrame(tick);
+  };
+  _ga.rafId=requestAnimationFrame(tick);
+}
+function _stopLoop() { if(_ga.rafId){cancelAnimationFrame(_ga.rafId);_ga.rafId=null;} }
+
+/* --- measure DOM grid layout --- */
+function _measureGrid(el) {
+  const cells=el.querySelectorAll('.life-cell');
+  if(!cells.length) return null;
+  const gr=el.getBoundingClientRect(), fr=cells[0].getBoundingClientRect();
+  if(fr.width<1) return null;
+  let cols=1;
+  for(let i=1;i<cells.length;i++){if(Math.abs(cells[i].getBoundingClientRect().top-fr.top)>1)break;cols++;}
+  let gap=2;
+  if(cols>1) gap=Math.max(0,Math.round(cells[1].getBoundingClientRect().left-fr.right));
+  return {sz:fr.width,gap,cols,ox:fr.left-gr.left,oy:fr.top-gr.top,w:gr.width,h:gr.height};
+}
+
+/* --- main transition --- */
+async function animateGridTransition(oldState, newState) {
+  const grid = document.getElementById('dash-life-grid');
+  if (!grid || _animating) return;
+  const oldLit = oldState.totalLit, newLit = newState.totalLit;
+  const delta = Math.abs(newLit - oldLit);
+  if (delta === 0) { renderFreedomGrid(newState); return; }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { renderFreedomGrid(newState); return; }
+
+  _animating = true;
+
+  // Re-render grid to old state for accurate measurement
+  // (refreshAll may have pre-rendered newState already)
+  renderFreedomGrid(oldState);
+
+  // Prepare DOM grid for measurement (add placeholder cells for ignite)
+  if (newLit > oldLit) {
+    if (oldLit === 0) { grid.style.display = ''; grid.innerHTML = ''; }
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < delta; i++) {
+      const c = document.createElement('div');
+      c.className = 'life-cell dark';
+      frag.appendChild(c);
+    }
+    grid.appendChild(frag);
+  }
+
+  // Measure layout from live DOM
+  const L = _measureGrid(grid);
+  if (!L) { renderFreedomGrid(newState); _animating = false; return; }
+
+  // Setup canvas
+  const canvas = document.getElementById('grid-anim-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.style.width = L.w + 'px';
+  canvas.style.height = L.h + 'px';
+  canvas.width = Math.round(L.w * dpr);
+  canvas.height = Math.round(L.h * dpr);
+
+  const stageEl = grid.closest('.grid-stage') || grid.parentElement;
+  const bg = getComputedStyle(stageEl).backgroundColor || '#14141e';
+
+  Object.assign(_ga, {
+    ctx, dpr, anims: new Map(),
+    sz: L.sz, gap: L.gap, cols: L.cols, ox: L.ox, oy: L.oy, cw: L.w, ch: L.h,
+    total: Math.max(oldLit, newLit), blue: newState.blueDays, lit: oldLit,
+    cam:{s:1,tx:0,ty:0}, camT:{s:1,tx:0,ty:0}, dirty:true, bg,
+  });
+
+  // Swap: hide grid, show canvas
+  grid.style.display = 'none';
+  canvas.style.display = 'block';
+  if (newLit > oldLit) updateGridSummary(newState);
+
+  _startLoop();
+
+  if (newLit > oldLit) {
+    // === IGNITE === (time-based scheduling)
+    const scale = _pscl(delta);
+    _scam(oldLit, scale);
+    await _sleep(600);
+    const stagger = _staggerMs(delta);
+    const ignDur = delta > 100 ? 1200 : _IGN_MS;
+    const t0 = performance.now();
+    for (let k = 0; k < delta; k++) {
+      const i = oldLit + k;
+      const delay = delta <= 1 ? 0 : (k / (delta - 1)) * stagger;
+      setTimeout(() => {
+        const isB = i < newState.blueDays;
+        _ga.anims.set(i, {type:'ignite', t0:performance.now(), dur:ignDur, anim:_ignF, isB});
+        _scam(i, scale);
+        _ga.dirty = true;
+      }, delay);
+    }
+    await _sleep(stagger + ignDur);
+    _ga.lit = newLit;
+  } else {
+    // === EXTINGUISH === (time-based scheduling)
+    const scale = _pscl(delta);
+    _scam(oldLit - 1, scale);
+    await _sleep(600);
+    const stagger = Math.round(_staggerMs(delta) * 1.3);
+    const extDur = delta > 100 ? 1600 : _EXT_MS;
+    for (let k = 0; k < delta; k++) {
+      const i = oldLit - 1 - k;
+      const delay = delta <= 1 ? 0 : (k / (delta - 1)) * stagger;
+      setTimeout(() => {
+        const isB = i < oldState.blueDays;
+        _ga.anims.set(i, {type:'extinguish', t0:performance.now(), dur:extDur, anim:_extF, isB});
+        _scam(i, scale);
+        _ga.dirty = true;
+      }, delay);
+    }
+    await _sleep(stagger + extDur);
+    _ga.lit = newLit;
+    updateGridSummary(newState);
+  }
+
+  // Settle camera back to 1:1
+  _rcam();
+  await _sleep(_SETTLE);
+  _stopLoop();
+
+  // Restore DOM grid
+  canvas.style.display = 'none';
+  grid.style.display = '';
+  renderFreedomGrid(newState);
+  _animating = false;
+}
+
+// ===== FREEDOM DAYS GRID =====
+function updateGridSummary(state) {
+  const label = state.isOverflow ? `${state.rawTotal.toLocaleString()} 天自由 (显示上限 ${MAX_GRID_CELLS})` : `${state.totalLit} 天自由`;
+  document.getElementById('grid-summary').textContent = label;
+}
+
+function renderFreedomGrid(state) {
+  const grid = document.getElementById('dash-life-grid');
+  const { blueDays, totalLit } = state;
+  const burn = getDailyBurn();
+  if (burn === 0) {
+    grid.style.display = 'flex';
+    grid.innerHTML = '<div style="color:rgba(255,255,255,0.35);padding:2.5rem 1rem;text-align:center;font-size:0.85rem;line-height:1.6;width:100%;">记录第一笔支出后<br>格子才能开始计算</div>';
+    document.getElementById('grid-summary').textContent = '等待支出数据';
+    return;
+  }
+  grid.style.display = '';
+  let html = '';
+  for (let i = 0; i < totalLit; i++) {
+    const cls = i < blueDays ? 'blue' : 'yellow';
+    const isCurrent = i === totalLit - 1;
+    html += `<div class="life-cell ${cls}${isCurrent ? ' current' : ''}"></div>`;
+  }
+  if (totalLit === 0) html = '<div style="color:rgba(255,255,255,0.35);padding:2.5rem 1rem;text-align:center;font-size:0.85rem;line-height:1.6;">记录第一笔收入<br>点亮第一格</div>';
+  grid.innerHTML = html;
+  updateGridSummary(state);
+}
+
+// ===== DASHBOARD =====
+function refreshDashboard() {
+  const freedom = getFreedomDays();
+  const dailyBurn = getDailyBurn();
+  const passiveRatio = getPassiveRatio();
+  const recordDays = getRecordDays();
+
+  document.getElementById('dash-freedom-days').textContent =
+    freedom.total === Infinity ? '∞' : Math.floor(freedom.total).toLocaleString();
+  document.getElementById('dash-daily-burn').textContent =
+    dailyBurn.toFixed(1);
+  const ratioEl = document.getElementById('dash-passive-ratio');
+  ratioEl.textContent = (passiveRatio * 100).toFixed(1) + '%';
+  ratioEl.className = 'card-value ' + (passiveRatio >= 1 ? 'cyan' : passiveRatio >= 0.5 ? 'amber' : 'red');
+  document.getElementById('dash-record-days').textContent = recordDays;
+
+  renderFreedomGrid(getGridState());
+}
+
+// ===== RECORD =====
+function setRecordType(type) {
+  document.getElementById('toggle-expense').classList.toggle('active', type === 'expense');
+  document.getElementById('toggle-income').classList.toggle('active', type === 'income');
+  document.getElementById('toggle-simulate').classList.toggle('active', type === 'simulate');
+  document.getElementById('expense-form').style.display = type === 'expense' ? 'grid' : 'none';
+  document.getElementById('income-form').style.display = type === 'income' ? 'grid' : 'none';
+  document.getElementById('simulate-form').style.display = type === 'simulate' ? 'grid' : 'none';
+}
+
+// 模拟面板：实时显示数字预览（金额输入时）
+function previewSimImpact() {
+  const amount = parseFloat(document.getElementById('sim-amount').value) || 0;
+  const preview = document.getElementById('sim-impact-preview');
+  const text = document.getElementById('sim-impact-text');
+  if (amount <= 0) { preview.style.display = 'none'; return; }
+  preview.style.display = 'block';
+
+  const currentTotal = getTotalExpenses();
+  const days = getRecordDays();
+  const currentAvg = days > 0 ? currentTotal / days : 0;
+  const newAvg = days > 0 ? (currentTotal + amount) / days : 0;
+  const avgIncrease = newAvg - currentAvg;
+
+  const assets = appData.assets.total || 0;
+  const newAssets = assets - amount;
+
+  const netSavings = getNetSavings();
+  const curIncomeFreedom = currentAvg > 0 && netSavings > 0 ? netSavings / currentAvg : 0;
+  const currentFreedom = currentAvg > 0 ? assets / currentAvg + curIncomeFreedom : Infinity;
+  const newNetSavings = netSavings - amount;
+  const newIncomeFreedom = newAvg > 0 && newNetSavings > 0 ? newNetSavings / newAvg : 0;
+  const newFreedom = newAvg > 0 ? Math.max(0, newAssets) / newAvg + newIncomeFreedom : Infinity;
+  const freedomLoss = currentFreedom === Infinity ? 0 : currentFreedom - newFreedom;
+
+  text.innerHTML = `
+    KILL 1 储蓄: ${Math.floor(assets).toLocaleString()} → ${Math.floor(newAssets).toLocaleString()} (−${amount.toLocaleString()})<br>
+    KILL 2 日均: ${currentAvg.toFixed(1)} → ${newAvg.toFixed(2)} (+${avgIncrease.toFixed(2)})<br>
+    KILL 3 自由天数: ${currentFreedom === Infinity ? '∞' : currentFreedom.toFixed(1)} → ${newFreedom === Infinity ? '∞' : newFreedom.toFixed(1)} (−${freedomLoss.toFixed(1)}天)
+  `;
+}
+
+function previewImpact() {
+  const amount = parseFloat(document.getElementById('exp-amount').value) || 0;
+  const preview = document.getElementById('impact-preview');
+  const text = document.getElementById('impact-text');
+  if (amount <= 0) { preview.style.display = 'none'; return; }
+  preview.style.display = 'block';
+
+  const currentTotal = getTotalExpenses();
+  const days = getRecordDays();
+  const currentAvg = days > 0 ? currentTotal / days : 0;
+  const newAvg = (currentTotal + amount) / days;
+  const avgIncrease = newAvg - currentAvg;
+
+  // KILL 1: 用资产（用户的真实储蓄），不用 getNetSavings()（收支差）
+  const assets = appData.assets.total || 0;
+  const newAssets = assets - amount;
+
+  // KILL 3: 资产减少 + 日均上升 = 双重打击（真正的戴维斯三杀传导）
+  const netSavings = getNetSavings();
+  const curIncomeFreedom = currentAvg > 0 && netSavings > 0 ? netSavings / currentAvg : 0;
+  const currentFreedom = currentAvg > 0 ? assets / currentAvg + curIncomeFreedom : Infinity;
+
+  const newNetSavings = netSavings - amount;
+  const newIncomeFreedom = newAvg > 0 && newNetSavings > 0 ? newNetSavings / newAvg : 0;
+  const newFreedom = newAvg > 0 ? Math.max(0, newAssets) / newAvg + newIncomeFreedom : Infinity;
+  const freedomLoss = currentFreedom === Infinity ? 0 : currentFreedom - newFreedom;
+
+  text.innerHTML = `
+    KILL 1 储蓄: ${Math.floor(assets).toLocaleString()} → ${Math.floor(newAssets).toLocaleString()} (−${amount.toLocaleString()})<br>
+    KILL 2 日均: ${currentAvg.toFixed(1)} → ${newAvg.toFixed(2)} (+${avgIncrease.toFixed(2)})<br>
+    KILL 3 自由天数: ${currentFreedom === Infinity ? '∞' : currentFreedom.toFixed(1)} → ${newFreedom === Infinity ? '∞' : newFreedom.toFixed(1)} (−${freedomLoss.toFixed(1)}天)
+  `;
+}
+
+// 模拟支出：临时改 appData → 算新格子 → 撤回 → 跑动画 → refreshAll 复原
+async function simulateExpense() {
+  if (_animating) return;
+  const amount = parseFloat(document.getElementById('sim-amount').value);
+  if (!amount || amount <= 0) {
+    alert('请先填一个金额');
+    return;
+  }
+
+  const oldState = getGridState();
+
+  // 临时塞一笔假支出 + 扣 assets
+  const fakeId = '__sim_' + Date.now();
+  const dateStr = new Date().toISOString().split('T')[0];
+  const savedAssets = appData.assets.total;
+  appData.expenses.push({
+    id: fakeId, amount, category: 'simulate', date: dateStr,
+    created_at: new Date().toISOString(),
+  });
+  appData.assets.total = (savedAssets || 0) - amount;
+
+  const newState = getGridState();
+
+  // 立刻撤回 appData（不污染真实数据）
+  appData.expenses = appData.expenses.filter(e => e.id !== fakeId);
+  appData.assets.total = savedAssets;
+
+  if (oldState.totalLit !== newState.totalLit) {
+    await animateGridTransition(oldState, newState);
+    // 动画结束时 grid 停在 newState（模拟态），用真实 state 复原
+    refreshAll();
+  } else {
+    alert('这笔支出不足以消掉一格——还在当日预算内');
+  }
+}
+
+function addExpense() {
+  const amount = parseFloat(document.getElementById('exp-amount').value);
+  if (!amount || amount <= 0) return alert('请输入有效金额');
+
+  const oldState = getGridState();
+
+  const category = document.getElementById('exp-category').value;
+  const date = document.getElementById('exp-date').value || new Date().toISOString().split('T')[0];
+  const note = document.getElementById('exp-note').value;
+
+  appData.expenses.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    amount, category, note, date,
+    created_at: new Date().toISOString()
+  });
+
+  // 真实扣减资产（戴维斯三杀 KILL 1 的基准）
+  appData.assets.total = (appData.assets.total || 0) - amount;
+  appData.assets.updated_at = new Date().toISOString();
+
+  if (!appData.first_record_date || date < appData.first_record_date) {
+    appData.first_record_date = date;
+  }
+
+  saveData(appData);
+  document.getElementById('exp-amount').value = '';
+  document.getElementById('exp-note').value = '';
+  document.getElementById('impact-preview').style.display = 'none';
+
+  const newState = getGridState();
+  refreshAll();
+  if (oldState.totalLit !== newState.totalLit) {
+    animateGridTransition(oldState, newState);
+  }
+}
+
+function addIncome() {
+  const amount = parseFloat(document.getElementById('inc-amount').value);
+  if (!amount || amount <= 0) return alert('请输入有效金额');
+
+  const oldState = getGridState();
+
+  const source = document.getElementById('inc-source').value || '未分类';
+  const date = document.getElementById('inc-date').value || new Date().toISOString().split('T')[0];
+  const isPassive = document.getElementById('inc-passive').checked;
+
+  appData.incomes.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    amount, source, is_passive: isPassive, date,
+    created_at: new Date().toISOString()
+  });
+
+  // 真实增加资产
+  appData.assets.total = (appData.assets.total || 0) + amount;
+  appData.assets.updated_at = new Date().toISOString();
+
+  if (!appData.first_record_date || date < appData.first_record_date) {
+    appData.first_record_date = date;
+  }
+
+  saveData(appData);
+  document.getElementById('inc-amount').value = '';
+  document.getElementById('inc-source').value = '';
+  document.getElementById('inc-passive').checked = false;
+
+  const newState = getGridState();
+  refreshAll();
+  if (oldState.totalLit !== newState.totalLit) {
+    animateGridTransition(oldState, newState);
+  }
+}
+
+function refreshRecord() {
+  const today = getTodaySpending();
+  const avg = getDailyBurn();
+  const el = document.getElementById('today-vs-avg');
+  if (avg > 0) {
+    const ratio = today / avg;
+    el.textContent = `${today.toFixed(0)} / ${avg.toFixed(0)} (${(ratio * 100).toFixed(0)}%)`;
+    el.style.color = ratio > 1.5 ? 'var(--red-bright)' : ratio > 1 ? 'var(--amber)' : 'var(--cyan)';
+  } else {
+    el.textContent = '暂无数据';
+  }
+  document.getElementById('today-summary').textContent =
+    `今日已花: ${today.toFixed(1)}元 | 日均线: ${avg.toFixed(1)}元 | ${today > avg ? '超出' : '低于'}日均 ${Math.abs(today - avg).toFixed(1)}元`;
+
+  // Set default date to today
+  const todayStr = new Date().toISOString().split('T')[0];
+  if (!document.getElementById('exp-date').value) document.getElementById('exp-date').value = todayStr;
+  if (!document.getElementById('inc-date').value) document.getElementById('inc-date').value = todayStr;
+}
+
+// ===== ASSETS =====
+function updateAssets() {
+  const total = parseFloat(document.getElementById('asset-total').value);
+  if (isNaN(total) || total < 0) return alert('请输入有效金额');
+  appData.assets.total = total;
+  appData.assets.updated_at = new Date().toISOString();
+  saveData(appData);
+  refreshAll();
+}
+
+function addPassiveSource() {
+  const name = document.getElementById('source-name').value;
+  const amount = parseFloat(document.getElementById('source-amount').value);
+  if (!name || !amount || amount <= 0) return alert('请填写完整信息');
+
+  appData.passive_sources.push({
+    name, monthly_amount: amount, created_at: new Date().toISOString()
+  });
+  saveData(appData);
+  document.getElementById('source-name').value = '';
+  document.getElementById('source-amount').value = '';
+  refreshAll();
+}
+
+function removePassiveSource(idx) {
+  appData.passive_sources.splice(idx, 1);
+  saveData(appData);
+  refreshAll();
+}
+
+function refreshAssets() {
+  document.getElementById('asset-total').value = appData.assets.total || '';
+  if (appData.assets.updated_at) {
+    document.getElementById('asset-updated-at').textContent =
+      '上次更新: ' + new Date(appData.assets.updated_at).toLocaleString('zh-CN');
+  }
+
+  const list = document.getElementById('source-list');
+  list.innerHTML = appData.passive_sources.map((s, i) => `
+    <div class="source-item">
+      <span class="name">${s.name}</span>
+      <span class="amount">${s.monthly_amount.toLocaleString()} 元/月</span>
+      <button class="delete-btn" onclick="removePassiveSource(${i})">×</button>
+    </div>
+  `).join('');
+
+  const totalPassive = getDailyPassive();
+  document.getElementById('passive-total').textContent =
+    `合计: ${(totalPassive * 30).toLocaleString()} 元/月`;
+  document.getElementById('calc-passive-daily').textContent = totalPassive.toFixed(2);
+  document.getElementById('calc-daily-burn').textContent = getDailyBurn().toFixed(2);
+  const ratio = getPassiveRatio();
+  document.getElementById('calc-ratio').textContent = (ratio * 100).toFixed(1);
+  document.getElementById('calc-verdict').textContent =
+    ratio >= 1 ? '已实现财富自由！' : `还需提升 ${((1 - ratio) * 100).toFixed(1)}% 达到自由`;
+}
+
+// ===== HISTORY =====
+function renderHistory() {
+  renderHeatmap();
+  renderTxList();
+  renderAvgChart();
+}
+
+function renderHeatmap() {
+  const container = document.getElementById('heatmap');
+  const now = new Date();
+  const cells = [];
+  const dailyTotals = {};
+
+  appData.expenses.forEach(e => {
+    dailyTotals[e.date] = (dailyTotals[e.date] || 0) + e.amount;
+  });
+
+  const values = Object.values(dailyTotals);
+  const maxSpend = values.length > 0 ? Math.max(...values) : 1;
+
+  for (let i = 364; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    const amount = dailyTotals[dateStr] || 0;
+    let level = '';
+    if (amount > 0) {
+      const ratio = amount / maxSpend;
+      if (ratio > 0.75) level = 'l4';
+      else if (ratio > 0.5) level = 'l3';
+      else if (ratio > 0.25) level = 'l2';
+      else level = 'l1';
+    }
+    cells.push(`<div class="heatmap-cell ${level}" title="${dateStr}: ${amount.toFixed(0)}元"></div>`);
+  }
+  container.innerHTML = cells.join('');
+}
+
+function renderTxList() {
+  const filter = document.getElementById('filter-category').value;
+  const list = document.getElementById('tx-list');
+
+  let items = [];
+  if (filter === 'income' || filter === 'all') {
+    appData.incomes.forEach(inc => {
+      items.push({ id: inc.id, type: 'income', date: inc.date, amount: inc.amount, label: inc.source, category: 'income' });
+    });
+  }
+  if (filter !== 'income') {
+    appData.expenses.forEach(exp => {
+      if (filter === 'all' || exp.category === filter || CATEGORIES[exp.category] === filter) {
+        items.push({ id: exp.id, type: 'expense', date: exp.date, amount: exp.amount, label: exp.note || CATEGORIES[exp.category], category: exp.category });
+      }
+    });
+  }
+
+  items.sort((a, b) => b.date.localeCompare(a.date));
+  items = items.slice(0, 100);
+
+  const escapeAttr = s => String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+  list.innerHTML = items.length === 0 ? '<div class="text-dim text-sm" style="padding:20px;text-align:center;">暂无记录</div>' :
+    items.map(it => `
+      <div class="tx-item">
+        <div class="left">
+          <span>${it.label}</span>
+          <span class="category">${it.date} · ${it.type === 'income' ? '收入' : CATEGORIES[it.category]}</span>
+        </div>
+        <span class="${it.type === 'expense' ? 'amount-neg' : 'amount-pos'}">
+          ${it.type === 'expense' ? '−' : '+'}${it.amount.toLocaleString()}
+        </span>
+        ${it.id ? `<button type="button" class="tx-delete" title="撤销这笔" onclick="deleteTx('${escapeAttr(it.id)}','${it.type}')">×</button>` : ''}
+      </div>
+    `).join('');
+}
+
+// 撤销/删除一笔记录：反向调整 assets + tombstone 进 deleted_ids
+function deleteTx(id, type) {
+  const arr = type === 'income' ? appData.incomes : appData.expenses;
+  const idx = arr.findIndex(x => x.id === id);
+  if (idx < 0) return;
+  const item = arr[idx];
+  const label = type === 'income'
+    ? `收入：${item.source || '未分类'}`
+    : `${CATEGORIES[item.category] || item.category}${item.note ? ' · ' + item.note : ''}`;
+  const direction = type === 'income' ? '减少' : '恢复';
+  const msg = [
+    '确定撤销这笔记录？',
+    '',
+    `${item.date} · ${label}`,
+    `${type === 'income' ? '+' : '−'}${item.amount} 元`,
+    '',
+    `资产会反向${direction} ${item.amount} 元`,
+    '⚠️ Excel 里那行记录需要你手动删除',
+  ].join('\n');
+  if (!confirm(msg)) return;
+
+  // 反向调整资产
+  if (type === 'income') {
+    appData.assets.total = (appData.assets.total || 0) - item.amount;
+  } else {
+    appData.assets.total = (appData.assets.total || 0) + item.amount;
+  }
+  appData.assets.updated_at = new Date().toISOString();
+
+  // 移除 + tombstone
+  arr.splice(idx, 1);
+  if (!Array.isArray(appData.deleted_ids)) appData.deleted_ids = [];
+  if (!appData.deleted_ids.includes(id)) appData.deleted_ids.push(id);
+  // 防 tombstone 无限增长
+  if (appData.deleted_ids.length > 500) {
+    appData.deleted_ids = appData.deleted_ids.slice(-500);
+  }
+
+  saveData(appData);
+  refreshAll();
+}
+
+function renderAvgChart() {
+  const canvas = document.getElementById('avg-chart');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * 2;
+  canvas.height = 240;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (appData.expenses.length === 0) return;
+
+  // Calculate running average
+  const sorted = [...appData.expenses].sort((a, b) => a.date.localeCompare(b.date));
+  const dailyTotals = {};
+  sorted.forEach(e => { dailyTotals[e.date] = (dailyTotals[e.date] || 0) + e.amount; });
+
+  const dates = Object.keys(dailyTotals).sort();
+  if (dates.length < 2) return;
+
+  let cumTotal = 0;
+  let dayCount = 0;
+  const points = [];
+  const first = new Date(dates[0]);
+
+  dates.forEach(date => {
+    cumTotal += dailyTotals[date];
+    dayCount = Math.max(1, Math.ceil((new Date(date) - first) / 86400000) + 1);
+    points.push(cumTotal / dayCount);
+  });
+
+  const maxVal = Math.max(...points);
+  const w = canvas.width - 40;
+  const h = canvas.height - 40;
+
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--amber').trim() || '#e0a050';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  points.forEach((v, i) => {
+    const x = 20 + (i / (points.length - 1)) * w;
+    const y = 20 + h - (v / maxVal) * h;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--mute').trim() || '#888';
+  ctx.font = '18px monospace';
+  ctx.fillText(maxVal.toFixed(0), 0, 28);
+  ctx.fillText('0', 0, canvas.height - 10);
+}
+
+// ===== SELF CHECK =====
+const SELF_CHECKS = [
+  { title: '是否已开始记录每日消费', check: () => appData.expenses.length > 0 },
+  { title: '记录天数是否超过30天', check: () => getRecordDays() >= 30 },
+  { title: '是否了解自己的日均消费', check: () => getRecordDays() >= 7 && getDailyBurn() > 0 },
+  { title: '是否记录了可变现资产', check: () => appData.assets.total > 0 },
+  { title: '自由天数是否超过180天', check: () => getFreedomDays().total >= 180 },
+  { title: '自由天数是否超过365天', check: () => getFreedomDays().total >= 365 },
+  { title: '是否有被动收入来源', check: () => appData.passive_sources.length > 0 },
+  { title: '收入覆盖率是否超过50%', check: () => getPassiveRatio() >= 0.5 },
+  { title: '被动收入是否覆盖日常消费 (≥100%)', check: () => getPassiveRatio() >= 1 }
+];
+
+function refreshSelfCheck() {
+  const list = document.getElementById('check-list');
+  list.innerHTML = SELF_CHECKS.map((item, i) => {
+    const met = item.check();
+    return `
+      <div class="check-item ${met ? 'met' : 'not-met'}">
+        <div class="status-dot"></div>
+        <div class="check-text">
+          <div class="check-title">${i + 1}. ${item.title}</div>
+          <div class="check-desc">${met ? '已达成' : '未达成'}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== CLOUD SYNC =====
+async function cloudSync() {
+  const btn = document.getElementById('sync-btn');
+  if (!appData) return;
+  btn.textContent = '同步中...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${SYNC_API}/sync/push?token=${SYNC_TOKEN}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(appData),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const merged = await res.json();
+    appData = merged;
+    saveData(appData);
+    refreshAll();
+    btn.textContent = '☁️ 已同步';
+    setTimeout(() => { btn.textContent = '☁️ 同步'; btn.disabled = false; }, 2000);
+  } catch (err) {
+    btn.textContent = '☁️ 同步';
+    btn.disabled = false;
+    alert('同步失败: ' + err.message);
+  }
+}
+
+// ===== EXCEL EXPORT =====
+function exportExcel() {
+  if (!appData || typeof XLSX === 'undefined') { alert('导出组件未加载，请检查网络'); return; }
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: 支出明细
+  const expRows = appData.expenses.map(e => ({
+    '日期': e.date,
+    '金额': e.amount,
+    '分类': CATEGORIES[e.category] || e.category,
+    '备注': e.note || ''
+  }));
+  const wsExp = XLSX.utils.json_to_sheet(expRows);
+  wsExp['!cols'] = [{wch:12},{wch:10},{wch:8},{wch:24}];
+  XLSX.utils.book_append_sheet(wb, wsExp, '支出明细');
+
+  // Sheet 2: 收入明细
+  const incRows = appData.incomes.map(i => ({
+    '日期': i.date,
+    '金额': i.amount,
+    '来源': i.source || '',
+    '备注': i.note || ''
+  }));
+  const wsInc = XLSX.utils.json_to_sheet(incRows);
+  wsInc['!cols'] = [{wch:12},{wch:10},{wch:10},{wch:24}];
+  XLSX.utils.book_append_sheet(wb, wsInc, '收入明细');
+
+  // Sheet 3: 月度汇总
+  const monthMap = {};
+  appData.expenses.forEach(e => {
+    const m = e.date.slice(0, 7);
+    if (!monthMap[m]) monthMap[m] = { exp: 0, inc: 0 };
+    monthMap[m].exp += e.amount;
+  });
+  appData.incomes.forEach(i => {
+    const m = i.date.slice(0, 7);
+    if (!monthMap[m]) monthMap[m] = { exp: 0, inc: 0 };
+    monthMap[m].inc += i.amount;
+  });
+  const monthRows = Object.keys(monthMap).sort().map(m => ({
+    '月份': m,
+    '总支出': +monthMap[m].exp.toFixed(2),
+    '总收入': +monthMap[m].inc.toFixed(2),
+    '净储蓄': +(monthMap[m].inc - monthMap[m].exp).toFixed(2),
+    '日均消费': +(monthMap[m].exp / new Date(m + '-28').getDate()).toFixed(1)
+  }));
+  const wsMon = XLSX.utils.json_to_sheet(monthRows);
+  wsMon['!cols'] = [{wch:10},{wch:10},{wch:10},{wch:10},{wch:10}];
+  XLSX.utils.book_append_sheet(wb, wsMon, '月度汇总');
+
+  // Sheet 4: 概览
+  const burn = getDailyBurn();
+  const freedom = getFreedomDays();
+  const overview = [
+    { '指标': '自由天数', '值': Math.floor(freedom.total) },
+    { '指标': '日均消费', '值': +burn.toFixed(1) },
+    { '指标': '总资产', '值': appData.assets.total },
+    { '指标': '追踪天数', '值': getRecordDays() },
+    { '指标': '总支出', '值': +getTotalExpenses().toFixed(2) },
+    { '指标': '总收入', '值': +getTotalIncome().toFixed(2) },
+    { '指标': '净储蓄', '值': +getNetSavings().toFixed(2) },
+    { '指标': '被动收入覆盖率', '值': +(getPassiveRatio() * 100).toFixed(1) + '%' },
+    { '指标': '导出时间', '值': new Date().toLocaleString('zh-CN') },
+  ];
+  const wsOv = XLSX.utils.json_to_sheet(overview);
+  wsOv['!cols'] = [{wch:16},{wch:18}];
+  XLSX.utils.book_append_sheet(wb, wsOv, '概览');
+
+  XLSX.writeFile(wb, `Lumen_${new Date().toISOString().split('T')[0]}.xlsx`);
+}
+
+// ===== DATA MANAGEMENT =====
+function exportData() {
+  const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `lumen_data_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.profile && data.expenses !== undefined) {
+        appData = data;
+        saveData(appData);
+        refreshAll();
+        alert('导入成功！');
+      } else {
+        alert('无效的数据文件');
+      }
+    } catch { alert('文件解析失败'); }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function clearAllData() {
+  localStorage.removeItem(STORAGE_KEY);
+  appData = null;
+  location.reload();
+}
+
+// ===== REFRESH ALL =====
+function refreshAll() {
+  if (!appData) return;
+  refreshDashboard();
+  refreshRecord();
+  refreshAssets();
+  renderHistory();
+  refreshSelfCheck();
+}
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ===== INIT =====
+// Local-first: show UI immediately from localStorage; sync cloud in background
+(async function init() {
+  const overlay = document.getElementById('loading-overlay');
+  const msg = document.getElementById('loading-msg');
+
+  // 1. Load local data first — UI shows in <100ms
+  appData = loadData();
+  if (overlay) overlay.style.display = 'none';
+  checkSetup();
+
+  // 2. Background cloud pull (4s timeout). On success, merge & refresh.
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 4000);
+    const r = await fetch(`${SYNC_API}/sync?token=${SYNC_TOKEN}`, { signal: ctrl.signal, cache: 'no-store' });
+    clearTimeout(timer);
+    if (!r.ok) return;
+    const cloud = await r.json();
+    if (!cloud || !cloud.expenses) return;
+    // Merge: union by id, cloud wins on collision
+    const localExp = appData?.expenses || [];
+    const localInc = appData?.incomes || [];
+    const expMap = new Map(); localExp.forEach(e => e.id && expMap.set(e.id, e));
+    cloud.expenses.forEach(e => e.id && expMap.set(e.id, e));
+    const incMap = new Map(); localInc.forEach(e => e.id && incMap.set(e.id, e));
+    (cloud.incomes || []).forEach(e => e.id && incMap.set(e.id, e));
+    const merged = { ...(appData || {}), ...cloud,
+      expenses: [...expMap.values()].sort((a,b) => (a.date||'').localeCompare(b.date||'')),
+      incomes:  [...incMap.values()].sort((a,b) => (a.date||'').localeCompare(b.date||'')),
+    };
+    if (cloud.assets?.updated_at && appData?.assets?.updated_at &&
+        appData.assets.updated_at > cloud.assets.updated_at) {
+      merged.assets = appData.assets;
+    }
+    appData = merged;
+    saveData.__skip = true;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+    delete saveData.__skip;
+    if (typeof refreshAll === 'function') refreshAll();
+  } catch (err) {
+    // Silent — local data already shown
+    console.warn('[sync] background pull failed:', err.message);
+  }
+})();
+</script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
+</body>
+</html>
