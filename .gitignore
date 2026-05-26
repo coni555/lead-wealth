@@ -9,3 +9,8 @@ dist/
 *.log
 .env
 .env.local
+
+# 项目内部工作文档(产品介绍/调研 prompt 等),留在目录里方便集中管理,但不公开
+lead-wealth-产品介绍.md
+lead-wealth-codex调研prompt.md
+lead-wealth-市场调研.md
