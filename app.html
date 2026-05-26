@@ -1149,6 +1149,67 @@ html.dark .meteor {
 #auth-gate input{width:220px;padding:0.6rem 1rem;border:1px solid oklch(0.3 0.01 80);border-radius:8px;background:oklch(0.14 0.005 80);color:oklch(0.85 0.01 80);font-size:0.95rem;text-align:center;outline:none;font-family:'JetBrains Mono',monospace;}
 #auth-gate input:focus{border-color:oklch(0.55 0.08 55);}
 #auth-gate .auth-err{color:oklch(0.65 0.18 25);font-size:0.8rem;height:1rem;margin:0;}
+
+/* Devices */
+.device-list{display:flex;flex-direction:column;gap:0.6rem;}
+.device-item{
+  border:1px solid var(--rule);
+  background:var(--panel-soft);
+  border-radius:4px;
+  padding:0.9rem 1rem;
+  display:flex;flex-direction:column;gap:0.5rem;
+  transition:border-color 0.2s;
+}
+.device-item:hover{border-color:var(--lamp-warm-soft);}
+.device-head{display:flex;justify-content:space-between;align-items:flex-start;gap:0.8rem;}
+.device-name{
+  font-family:var(--font-zh);
+  font-size:0.95rem;color:var(--paper-hi);font-weight:500;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.device-emoji{
+  font-size:1.05rem;line-height:1;
+  font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Twemoji Mozilla',emoji;
+}
+.device-cat{
+  font-family:var(--font-mono);font-size:0.65rem;
+  letter-spacing:0.08em;color:var(--mute);text-transform:uppercase;
+  padding:0.1rem 0.4rem;border:1px solid var(--rule);border-radius:2px;
+}
+.device-del{
+  background:none;border:none;color:var(--mute);cursor:pointer;
+  font-size:1rem;padding:0;width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:2px;transition:all 0.2s;
+}
+.device-del:hover{color:var(--danger);background:var(--void-soft);}
+.device-meta{
+  font-family:var(--font-mono);font-size:0.72rem;
+  color:var(--paper-soft);letter-spacing:0.02em;
+}
+.device-stats{
+  display:flex;flex-direction:column;gap:0.25rem;
+  padding-top:0.5rem;border-top:1px dashed var(--rule);
+}
+.device-daily{
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.device-daily-label{
+  font-family:var(--font-zh);font-size:0.78rem;color:var(--paper-soft);
+}
+.device-daily-value{
+  font-family:var(--font-mono);font-size:1.1rem;
+  color:var(--lamp-warm);font-weight:500;
+}
+.device-trans{
+  font-family:var(--font-zh);font-size:0.72rem;color:var(--mute);
+  display:flex;justify-content:space-between;
+}
+.device-trans .freedom-cost{color:var(--lamp-cool);}
+.device-empty{
+  font-family:var(--font-zh);font-size:0.8rem;color:var(--mute);
+  text-align:center;padding:1.5rem 0;font-style:italic;
+}
 </style>
 </head>
 <body>
@@ -1403,6 +1464,49 @@ html.dark .meteor {
     <div class="card-title">Asset Health</div>
     <div class="formula-box">日被动收入 = <span id="calc-passive-daily">0</span> 元<br>日均消费 = <span id="calc-daily-burn">0</span> 元<br>覆盖率 = <span id="calc-ratio">0</span>%<br><span id="calc-verdict" style="color:var(--amber)"></span></div>
   </div>
+
+  <div class="card">
+    <div class="flex-between">
+      <div class="card-title">Devices · 持有物</div>
+      <span class="mono text-sm text-dim" id="devices-count"></span>
+    </div>
+    <p class="text-sm text-dim" style="margin:0.4rem 0 1rem;line-height:1.5;">
+      记录大件物品的"真实日耗",看清每件东西每天花你多少钱。<br>
+      <span style="color:var(--ash);font-size:0.72rem;">设备不计入资产/日均消费,只作性价比观察。</span>
+    </p>
+
+    <div class="form-row">
+      <div class="form-group" style="flex:2">
+        <label>名称</label>
+        <input type="text" id="dev-name" placeholder="MacBook Pro / iPhone / ...">
+      </div>
+      <div class="form-group">
+        <label>分类</label>
+        <select id="dev-category">
+          <option value="数码">数码</option>
+          <option value="家电">家电</option>
+          <option value="家具">家具</option>
+          <option value="服饰">服饰</option>
+          <option value="工具">工具</option>
+          <option value="交通">交通</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>购买价格 (元)</label>
+        <input type="number" id="dev-price" placeholder="0" min="0" step="1">
+      </div>
+      <div class="form-group">
+        <label>购买日期</label>
+        <input type="date" id="dev-date">
+      </div>
+      <button class="btn-primary" onclick="addDevice()" style="align-self:flex-end">添加</button>
+    </div>
+
+    <div class="device-list" id="device-list" style="margin-top:1.2rem"></div>
+  </div>
 </div>
 
 <!-- History Tab -->
@@ -1519,6 +1623,7 @@ function getDefaultData() {
     passive_sources: [],
     expenses: [],
     incomes: [],
+    devices: [],
     deleted_ids: [],
     first_record_date: null
   };
@@ -2288,6 +2393,207 @@ function refreshAssets() {
   document.getElementById('calc-ratio').textContent = (ratio * 100).toFixed(1);
   document.getElementById('calc-verdict').textContent =
     ratio >= 1 ? '已实现财富自由！' : `还需提升 ${((1 - ratio) * 100).toFixed(1)}% 达到自由`;
+
+  renderDevices();
+}
+
+// ===== DEVICES =====
+// 关键词 → emoji。先匹配的优先,所以更具体的关键词放前面。
+const ICON_KEYWORDS = [
+  // 数码
+  { kw: ['macbook','laptop','thinkpad','surface','xps','笔记本电脑','笔记本','电脑'], icon: '💻' },
+  { kw: ['imac','显示器','monitor','台式机'], icon: '🖥️' },
+  { kw: ['airpods','airpod','耳机','earphone','earbud','headphone','beats'], icon: '🎧' },
+  { kw: ['apple watch','watch','手表','智能表','智能手表'], icon: '⌚' },
+  { kw: ['iphone','android','pixel','xiaomi','redmi','huawei','oppo','vivo','三星','华为','手机'], icon: '📱' },
+  { kw: ['ipad','平板','tablet'], icon: '📲' },
+  { kw: ['switch','ps5','ps4','xbox','游戏机','steam deck','steamdeck'], icon: '🎮' },
+  { kw: ['相机','camera','单反','微单','lumix','canon','nikon','fujifilm','索尼'], icon: '📷' },
+  { kw: ['电视','tv'], icon: '📺' },
+  { kw: ['键盘','keyboard'], icon: '⌨️' },
+  { kw: ['鼠标','mouse'], icon: '🖱️' },
+  { kw: ['打印机','printer'], icon: '🖨️' },
+  { kw: ['硬盘','ssd','hdd','u盘','移动硬盘'], icon: '💾' },
+  { kw: ['充电宝','移动电源','powerbank','power bank'], icon: '🔋' },
+  { kw: ['路由器','router'], icon: '📡' },
+  { kw: ['麦克风','microphone'], icon: '🎤' },
+  { kw: ['音箱','音响','speaker'], icon: '🔊' },
+  { kw: ['vr','oculus','vision pro','quest'], icon: '🥽' },
+  { kw: ['kindle','电子书','ereader'], icon: '📖' },
+  // 家电
+  { kw: ['冰箱','fridge','refrigerator'], icon: '🧊' },
+  { kw: ['洗衣机','washer','烘干机','dryer'], icon: '🧺' },
+  { kw: ['空气炸锅','air fryer'], icon: '🍟' },
+  { kw: ['烤箱','oven','烤面包机'], icon: '🍞' },
+  { kw: ['咖啡机','咖啡壶','coffee maker','espresso'], icon: '☕' },
+  { kw: ['空调','aircon','air conditioner'], icon: '🌬️' },
+  { kw: ['风扇','fan'], icon: '💨' },
+  { kw: ['吸尘器','vacuum','扫地机器人'], icon: '🧹' },
+  { kw: ['热水器','热水','water heater'], icon: '🚿' },
+  { kw: ['微波炉','microwave'], icon: '🍱' },
+  { kw: ['电饭锅','电饭煲','rice cooker'], icon: '🍚' },
+  { kw: ['吹风机','hair dryer'], icon: '💇' },
+  // 家具
+  { kw: ['床垫','mattress','床'], icon: '🛏️' },
+  { kw: ['沙发','sofa','couch'], icon: '🛋️' },
+  { kw: ['椅','chair','凳'], icon: '🪑' },
+  { kw: ['书架','书柜','shelf','bookshelf'], icon: '📚' },
+  { kw: ['镜子','mirror'], icon: '🪞' },
+  { kw: ['桌','desk','table'], icon: '🛠️' },
+  // 服饰
+  { kw: ['鞋','shoe','sneaker','球鞋','靴','boot'], icon: '👟' },
+  { kw: ['t恤','tshirt','t-shirt','衣服','衬衫','shirt'], icon: '👕' },
+  { kw: ['裤','pants','jeans','牛仔'], icon: '👖' },
+  { kw: ['外套','大衣','羽绒服','coat','jacket','down'], icon: '🧥' },
+  { kw: ['背包','双肩包','backpack'], icon: '🎒' },
+  { kw: ['手提包','手袋','handbag','钱包','wallet'], icon: '👜' },
+  { kw: ['眼镜','墨镜','glasses','sunglasses'], icon: '👓' },
+  { kw: ['帽','hat','cap'], icon: '🧢' },
+  // 工具
+  { kw: ['锤子','hammer'], icon: '🔨' },
+  { kw: ['螺丝刀','screwdriver'], icon: '🪛' },
+  { kw: ['扳手','wrench','spanner'], icon: '🔧' },
+  { kw: ['剪刀','scissor'], icon: '✂️' },
+  { kw: ['钢笔','签字笔','fountain pen'], icon: '🖊️' },
+  // 交通
+  { kw: ['汽车','轿车','suv','tesla','model','byd','car'], icon: '🚗' },
+  { kw: ['摩托','motorbike','motorcycle'], icon: '🏍️' },
+  { kw: ['自行车','单车','bicycle','road bike','mountain bike'], icon: '🚲' },
+  { kw: ['滑板车','电动车','scooter'], icon: '🛴' },
+  { kw: ['滑板','skateboard'], icon: '🛹' },
+  // 其他常见
+  { kw: ['书本','书籍','book'], icon: '📖' },
+  { kw: ['乐高','lego'], icon: '🧱' },
+  { kw: ['手办','figure','figurine'], icon: '🎎' },
+  { kw: ['手柄','controller','gamepad'], icon: '🎮' },
+];
+
+const CATEGORY_FALLBACK = {
+  '数码': '📱', '家电': '🏠', '家具': '🪑', '服饰': '👕',
+  '工具': '🔧', '交通': '🚗', '其他': '📦'
+};
+
+function guessIcon(name, category) {
+  // 名字归一化:小写 + 去空格/横杠/下划线,这样 "Air Pods" 也能匹配 "airpods"
+  const norm = (name || '').toLowerCase().replace(/[\s\-_·]/g, '');
+  for (const { kw, icon } of ICON_KEYWORDS) {
+    for (const k of kw) {
+      const kNorm = k.toLowerCase().replace(/[\s\-_·]/g, '');
+      if (norm.includes(kNorm)) return icon;
+    }
+  }
+  return CATEGORY_FALLBACK[category] || '📦';
+}
+
+function getDeviceDays(d) {
+  if (!d.purchase_date) return 1;
+  const start = new Date(d.purchase_date);
+  const now = new Date();
+  return Math.max(1, Math.ceil((now - start) / 86400000));
+}
+
+function getDeviceDailyCost(d) {
+  const days = getDeviceDays(d);
+  return days > 0 ? d.price / days : d.price;
+}
+
+// 把价格折算成"等于多少天自由"(原价 / 当前日均消费)
+function getDeviceFreedomDays(d) {
+  const burn = getDailyBurn();
+  if (burn <= 0) return null;
+  return d.price / burn;
+}
+
+function addDevice() {
+  const name = document.getElementById('dev-name').value.trim();
+  const category = document.getElementById('dev-category').value;
+  const price = parseFloat(document.getElementById('dev-price').value);
+  const date = document.getElementById('dev-date').value;
+
+  if (!name) return alert('请填写名称');
+  if (!price || price <= 0) return alert('请输入有效价格');
+  if (!date) return alert('请选择购买日期');
+
+  if (!appData.devices) appData.devices = [];
+  appData.devices.push({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    name, category, price,
+    purchase_date: date,
+    status: 'active',
+    created_at: new Date().toISOString()
+  });
+
+  saveData(appData);
+  document.getElementById('dev-name').value = '';
+  document.getElementById('dev-price').value = '';
+  document.getElementById('dev-date').value = '';
+  renderDevices();
+}
+
+function deleteDevice(id) {
+  if (!confirm('确定要删除这件物品吗？')) return;
+  appData.devices = (appData.devices || []).filter(d => d.id !== id);
+  saveData(appData);
+  renderDevices();
+}
+
+function renderDevices() {
+  const list = document.getElementById('device-list');
+  const countEl = document.getElementById('devices-count');
+  if (!list) return;
+
+  const devices = (appData.devices || []).slice().sort((a, b) =>
+    (b.purchase_date || '').localeCompare(a.purchase_date || '')
+  );
+
+  countEl.textContent = devices.length ? `${devices.length} 件 · 总价 ¥${devices.reduce((s, d) => s + d.price, 0).toLocaleString()}` : '';
+
+  if (devices.length === 0) {
+    list.innerHTML = `<div class="device-empty">还没有记录持有物。添加大件物品后,看清它每天花你多少钱。</div>`;
+    return;
+  }
+
+  const burn = getDailyBurn();
+  list.innerHTML = devices.map(d => {
+    const days = getDeviceDays(d);
+    const daily = getDeviceDailyCost(d);
+    const freedomDays = getDeviceFreedomDays(d);
+    const pctOfBurn = burn > 0 ? (daily / burn * 100) : null;
+
+    const yrs = (days / 365).toFixed(1);
+    const daysLabel = days < 365 ? `服役 ${days} 天` : `服役 ${yrs} 年 (${days} 天)`;
+
+    const transLine = (pctOfBurn !== null || freedomDays !== null)
+      ? `<div class="device-trans">
+           ${pctOfBurn !== null ? `<span>占当前日均消费 <strong>${pctOfBurn.toFixed(1)}%</strong></span>` : '<span></span>'}
+           ${freedomDays !== null ? `<span class="freedom-cost">≈ ${freedomDays.toFixed(1)} 天自由</span>` : ''}
+         </div>` : '';
+
+    return `
+      <div class="device-item">
+        <div class="device-head">
+          <div class="device-name">
+            <span class="device-emoji">${guessIcon(d.name, d.category)}</span>
+            ${escapeHtml(d.name)}
+            <span class="device-cat">${d.category}</span>
+          </div>
+          <button class="device-del" onclick="deleteDevice('${d.id}')" title="删除">×</button>
+        </div>
+        <div class="device-meta">¥${d.price.toLocaleString()} · 购于 ${d.purchase_date} · ${daysLabel}</div>
+        <div class="device-stats">
+          <div class="device-daily">
+            <span class="device-daily-label">日均使用成本</span>
+            <span class="device-daily-value">¥${daily.toFixed(2)}</span>
+          </div>
+          ${transLine}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 // ===== HISTORY =====
